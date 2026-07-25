@@ -19,25 +19,47 @@ export function Navigation() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 40);
-      const sections = ['work', 'about', 'process', 'contact'];
-      const els = sections.map((id) => document.getElementById(id));
-      const y = window.scrollY + window.innerHeight * 0.35;
-      let cur = 'work';
-      let curLabel = 'Work';
-      for (let i = 0; i < els.length; i++) {
-        const el = els[i];
-        if (el && el.offsetTop <= y) {
-          cur = sections[i];
-          curLabel = sections[i] === 'about' ? 'About' : sections[i] === 'work' ? 'Work' : sections[i] === 'process' ? 'Approach' : 'Contact';
-        }
-      }
-      setActive(cur);
-      setActiveLabel(curLabel);
+      const isScrolled = window.scrollY > 40;
+      setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+
+    const sections = ['work', 'about', 'process', 'contact'];
+    const observerOptions = {
+      root: null,
+      rootMargin: '-30% 0px -60% 0px',
+      threshold: 0,
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const curLabel =
+            id === 'about'
+              ? 'About'
+              : id === 'work'
+              ? 'Work'
+              : id === 'process'
+              ? 'Approach'
+              : 'Contact';
+          setActive(id);
+          setActiveLabel(curLabel);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      observer.disconnect();
+    };
   }, []);
 
   const go = (id: string) => {
@@ -56,7 +78,7 @@ export function Navigation() {
         <div
           className={`mx-auto flex w-full max-w-7xl items-center justify-between rounded-full border px-8 py-3 transition-all duration-500 ${
             scrolled
-              ? 'border-white/20 bg-white/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-black/5'
+              ? 'border-white/20 bg-white/95 shadow-md ring-1 ring-black/5'
               : 'border-transparent bg-transparent'
           }`}
         >
@@ -152,7 +174,7 @@ export function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-paper/95 backdrop-blur-md md:hidden"
+            className="fixed inset-0 z-40 bg-paper/98 md:hidden"
           >
             <div className="flex h-full flex-col justify-center px-8">
               {links.map((l, i) => (

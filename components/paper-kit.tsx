@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 
 /* ------------------------------------------------------------------ */
 /* Paper Canvas — the warm tactile background (grain, grid, lighting)  */
 /* ------------------------------------------------------------------ */
-export function PaperCanvas() {
+export const PaperCanvas = memo(function PaperCanvas() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
       {/* base paper */}
@@ -33,12 +33,12 @@ export function PaperCanvas() {
       />
     </div>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Custom cursor — magnetic ring + dot, hide on touch                  */
 /* ------------------------------------------------------------------ */
-export function CustomCursor() {
+export const CustomCursor = memo(function CustomCursor() {
   const ringX = useMotionValue(-100);
   const ringY = useMotionValue(-100);
   const dotX = useMotionValue(-100);
@@ -50,6 +50,9 @@ export function CustomCursor() {
   const [down, setDown] = useState(false);
   const [label, setLabel] = useState<string | null>(null);
   const [enabled, setEnabled] = useState(false);
+
+  const hoveringRef = useRef(false);
+  const labelRef = useRef<string | null>(null);
 
   useEffect(() => {
     const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -64,20 +67,36 @@ export function CustomCursor() {
         ringY.set(e.clientY);
         dotX.set(e.clientX);
         dotY.set(e.clientY);
-        const t = e.target as HTMLElement;
-        const interactive = t.closest('a, button, [data-cursor], input, textarea, [role="button"]');
-        setHovering(!!interactive);
-        const c = interactive?.getAttribute('data-cursor');
-        setLabel(c && c !== 'true' ? c : null);
       });
     };
+
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target) return;
+      const interactive = target.closest('a, button, [data-cursor], input, textarea, [role="button"]');
+      const nextHovering = !!interactive;
+      const nextLabel = interactive ? interactive.getAttribute('data-cursor') : null;
+      const finalLabel = nextLabel && nextLabel !== 'true' ? nextLabel : null;
+
+      if (hoveringRef.current !== nextHovering || labelRef.current !== finalLabel) {
+        hoveringRef.current = nextHovering;
+        labelRef.current = finalLabel;
+        setHovering(nextHovering);
+        setLabel(finalLabel);
+      }
+    };
+
     const dn = () => setDown(true);
     const up = () => setDown(false);
+
     window.addEventListener('mousemove', move, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
     window.addEventListener('mousedown', dn, { passive: true });
     window.addEventListener('mouseup', up, { passive: true });
+
     return () => {
       window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseover', handleMouseOver);
       window.removeEventListener('mousedown', dn);
       window.removeEventListener('mouseup', up);
       cancelAnimationFrame(frameId);
@@ -94,16 +113,17 @@ export function CustomCursor() {
       >
         <motion.div
           animate={{
-            width: hovering ? 56 : 30,
-            height: hovering ? 56 : 30,
-            scale: down ? 0.82 : 1,
+            scale: hovering ? (down ? 1.53 : 1.867) : (down ? 0.82 : 1),
           }}
           transition={{ type: 'spring', damping: 22, stiffness: 300 }}
-          className="-translate-x-1/2 -translate-y-1/2 rounded-full border border-ink/40 flex items-center justify-center"
+          className="-translate-x-1/2 -translate-y-1/2 w-[30px] h-[30px] rounded-full border border-ink/40 flex items-center justify-center"
           style={{ marginLeft: 0, marginTop: 0 }}
         >
           {label ? (
-            <span className="editorial-label text-ink !text-[0.5rem] !tracking-[0.18em] px-1 text-center leading-tight">
+            <span 
+              className="editorial-label text-ink !text-[0.5rem] !tracking-[0.18em] px-1 text-center leading-tight block"
+              style={{ transform: `scale(${1 / 1.867})` }}
+            >
               {label}
             </span>
           ) : null}
@@ -114,12 +134,12 @@ export function CustomCursor() {
       </motion.div>
     </div>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Masking tape                                                        */
 /* ------------------------------------------------------------------ */
-export function Tape({
+export const Tape = memo(function Tape({
   className = '',
   rotate = -6,
   color = 'gold',
@@ -144,12 +164,12 @@ export function Tape({
       }}
     />
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Sticky note                                                         */
 /* ------------------------------------------------------------------ */
-export function StickyNote({
+export const StickyNote = memo(function StickyNote({
   children,
   className = '',
   rotate = 4,
@@ -170,7 +190,7 @@ export function StickyNote({
   };
   return (
     <div
-      className={`relative p-5 shadow-[0_15px_35px_rgb(0,0,0,0.06)] ${colors[color]} ${className}`}
+      className={`relative p-5 shadow-md ${colors[color]} ${className}`}
       style={{ transform: `rotate(${rotate}deg)` }}
     >
       {pin && (
@@ -181,12 +201,12 @@ export function StickyNote({
       </div>
     </div>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Stamp tool                                                          */
 /* ------------------------------------------------------------------ */
-export function Stamp({
+export const Stamp = memo(function Stamp({
   children,
   className = '',
   rotate = -12,
@@ -210,12 +230,12 @@ export function Stamp({
       {children}
     </div>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Annotation chip                                                     */
 /* ------------------------------------------------------------------ */
-export function AnnotationChip({
+export const AnnotationChip = memo(function AnnotationChip({
   children,
   className = '',
   rotate = 0,
@@ -239,12 +259,12 @@ export function AnnotationChip({
       {children}
     </div>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Annotation tag with hand-drawn arrow icon                          */
 /* ------------------------------------------------------------------ */
-export function Annotation({
+export const Annotation = memo(function Annotation({
   children,
   className = '',
   rotate = 0,
@@ -268,12 +288,12 @@ export function Annotation({
       )}
     </div>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Blueprint corner marks — alignment registration ticks               */
 /* ------------------------------------------------------------------ */
-export function CornerMarks({ className = '' }: { className?: string }) {
+export const CornerMarks = memo(function CornerMarks({ className = '' }: { className?: string }) {
   return (
     <div aria-hidden className={`pointer-events-none absolute inset-0 ${className}`}>
       {[
@@ -298,12 +318,12 @@ export function CornerMarks({ className = '' }: { className?: string }) {
       ))}
     </div>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Pencil arrows                                                       */
 /* ------------------------------------------------------------------ */
-export function PencilArrow({
+export const PencilArrow = memo(function PencilArrow({
   className = '',
   direction = 'right',
 }: {
@@ -330,12 +350,12 @@ export function PencilArrow({
       <path d={paths[direction]} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* SketchArrow hand-drawn styling                                      */
 /* ------------------------------------------------------------------ */
-export function SketchArrow({ className = '' }: { className?: string }) {
+export const SketchArrow = memo(function SketchArrow({ className = '' }: { className?: string }) {
   return (
     <svg
       width="54"
@@ -354,12 +374,12 @@ export function SketchArrow({ className = '' }: { className?: string }) {
       />
     </svg>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Ruler markings strip                                                */
 /* ------------------------------------------------------------------ */
-export function Ruler({
+export const Ruler = memo(function Ruler({
   className = '',
   vertical = false,
 }: {
@@ -400,12 +420,12 @@ export function Ruler({
       ))}
     </div>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Paper clip                                                          */
 /* ------------------------------------------------------------------ */
-export function PaperClip({ className = '', rotate = 24 }: { className?: string; rotate?: number }) {
+export const PaperClip = memo(function PaperClip({ className = '', rotate = 24 }: { className?: string; rotate?: number }) {
   return (
     <svg
       width="22"
@@ -422,12 +442,12 @@ export function PaperClip({ className = '', rotate = 24 }: { className?: string;
       <path d="M14 6 V 32 a 5 5 0 0 1 -10 0 V 12 a 4 4 0 0 1 8 0 V 30 a 2 2 0 0 1 -4 0 V 16" />
     </svg>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Highlight marker swatch                                             */
 /* ------------------------------------------------------------------ */
-export function Highlight({ children, className = '', color = 'highlight' }: { children: React.ReactNode; className?: string; color?: 'highlight' | 'coral' | 'sage' }) {
+export const Highlight = memo(function Highlight({ children, className = '', color = 'highlight' }: { children: React.ReactNode; className?: string; color?: 'highlight' | 'coral' | 'sage' }) {
   const c: Record<string, string> = {
     highlight: 'hsl(48 80% 64% / 0.55)',
     coral: 'hsl(9 70% 66% / 0.4)',
@@ -443,7 +463,7 @@ export function Highlight({ children, className = '', color = 'highlight' }: { c
       {children}
     </span>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 /* Scroll reveal — wraps children, animates into view                  */
@@ -468,7 +488,6 @@ export function Reveal({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once, margin: '-80px' }}
       transition={{ duration: 0.7, delay, ease: [0.22, 0.8, 0.24, 1] }}
-      style={{ willChange: 'transform, opacity' }}
     >
       {children}
     </motion.div>
@@ -495,7 +514,6 @@ export function MaskReveal({
         whileInView={{ y: '0%' }}
         viewport={{ once, margin: '-40px' }}
         transition={{ duration: 0.8, delay, ease: [0.22, 0.8, 0.24, 1] }}
-        style={{ willChange: 'transform' }}
       >
         {children}
       </motion.span>
@@ -567,7 +585,7 @@ export function Magnetic({
 /* ------------------------------------------------------------------ */
 /* Section header — editorial label + oversized index number           */
 /* ------------------------------------------------------------------ */
-export function SectionIndex({ n, label, className = '' }: { n: string; label: string; className?: string }) {
+export const SectionIndex = memo(function SectionIndex({ n, label, className = '' }: { n: string; label: string; className?: string }) {
   return (
     <div className={`flex items-center gap-4 ${className}`}>
       <span className="editorial-num text-stone/70 text-2xl">{n}</span>
@@ -575,7 +593,7 @@ export function SectionIndex({ n, label, className = '' }: { n: string; label: s
       <span className="editorial-label">{label}</span>
     </div>
   );
-}
+});
 
 /* Empty export to satisfy bundlers */
 export const __noop = AnimatePresence;

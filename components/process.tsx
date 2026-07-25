@@ -23,7 +23,6 @@ export function Process() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const lineScale = useTransform(scrollYProgress, [0.1, 0.9], [0, 1]);
-  const arrowY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
 
   return (
     <section id="process" ref={ref} className="relative px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
@@ -75,9 +74,9 @@ export function Process() {
 
                 {/* arrow between (desktop) */}
                 {i < steps.length - 1 && (
-                  <motion.div style={{ y: arrowY }} className="absolute -right-5 top-1.5 hidden text-graphite/50 lg:block">
+                  <div className="absolute -right-5 top-1.5 hidden text-graphite/50 lg:block">
                     <PencilArrow direction="right" className="!w-5" />
-                  </motion.div>
+                  </div>
                 )}
               </Reveal>
             ))}

@@ -1,7 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Reveal, SectionIndex, Stamp, Annotation, PencilArrow, Highlight, CornerMarks } from '@/components/paper-kit';
 import { Code2, Palette, Sparkles, Layers } from 'lucide-react';
 
@@ -13,15 +12,9 @@ const tech = [
   { name: 'Framer Motion', role: 'Animation', icon: Sparkles },
   { name: 'Supabase', role: 'Backend', icon: Layers },
 ];
-
 export function About() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const stampRotate = useTransform(scrollYProgress, [0, 1], [-12, -4]);
-  const ySide = useTransform(scrollYProgress, [0, 1], [24, -24]);
-
   return (
-    <section id="about" ref={ref} className="relative px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
+    <section id="about" className="relative px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
       <CornerMarks className="opacity-30" />
 
       <div className="mx-auto max-w-[1280px]">
@@ -66,12 +59,18 @@ export function About() {
             </Reveal>
           </div>
 
-          {/* side: tech system + stamp */}
-          <motion.div style={{ y: ySide, willChange: 'transform' }} className="relative">
+          {/* side: tech system + stamp (animates once on view) */}
+          <motion.div
+            initial={{ opacity: 0, y: 35, rotate: 2 }}
+            whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="relative"
+          >
             <Reveal delay={0.1}>
               <div className="paper-sheet relative rounded-xl border border-rule/60 p-7">
                 <Tape />
-                <div className="editorial-label mb-1">Toolkit / Specimen sheet</div>
+                <div className="editorial-label mb-1">03 -- Toolkit / Specimen sheet</div>
                 <div className="editorial-num text-ink text-lg">No. 02 — Stack</div>
 
                 <div className="mt-6 space-y-px">
@@ -98,11 +97,11 @@ export function About() {
               </div>
             </Reveal>
 
-            <motion.div style={{ rotate: stampRotate, willChange: 'transform' }} className="absolute -right-3 -top-6 z-20">
-              <Stamp color="coral" rotate={0}>
+            <div className="absolute -right-3 -top-6 z-20">
+              <Stamp color="coral" rotate={-8}>
                 made by hand
               </Stamp>
-            </motion.div>
+            </div>
 
             <div className="absolute -bottom-6 -left-6 z-20">
               <Annotation className="text-[0.85rem]" rotate={-6} arrow>

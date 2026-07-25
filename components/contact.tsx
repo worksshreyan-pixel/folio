@@ -15,6 +15,11 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
 export function Contact() {
   const [status, setStatus] = useState<Status>('idle');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [toast, setToast] = useState<{ show: boolean; message: string; type: 'success' | 'error' }>({
+    show: false,
+    message: '',
+    type: 'success',
+  });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -22,6 +27,17 @@ export function Contact() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setToast({
+        show: true,
+        message: 'Please fill in all fields.',
+        type: 'error',
+      });
+      setTimeout(() => setToast((t) => ({ ...t, show: false })), 4000);
+      return;
+    }
+
     setStatus('loading');
 
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
@@ -29,28 +45,39 @@ export function Contact() {
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
     try {
-      if (serviceId && templateId && publicKey) {
-        await emailjs.send(
-          serviceId,
-          templateId,
-          {
-            from_name: form.name,
-            reply_to: form.email,
-            message: form.message,
-            to_email: EMAIL,
-          },
-          { publicKey }
-        );
-      } else {
-        // Fallback: open the user's mail client pre-filled
-        const subject = encodeURIComponent(`New project inquiry from ${form.name}`);
-        const body = encodeURIComponent(`${form.message}\n\n— ${form.name} (${form.email})`);
-        window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('EmailJS integration credentials missing.');
       }
+
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: form.name,
+          reply_to: form.email,
+          message: form.message,
+        },
+        { publicKey }
+      );
+
       setStatus('success');
       setForm({ name: '', email: '', message: '' });
+      setToast({
+        show: true,
+        message: 'Thank you. Your inquiry has been sent.',
+        type: 'success',
+      });
+      setTimeout(() => setToast((t) => ({ ...t, show: false })), 5000);
+      setTimeout(() => setStatus('idle'), 2000);
     } catch (err) {
       setStatus('error');
+      setToast({
+        show: true,
+        message: 'Something went wrong. Please try again.',
+        type: 'error',
+      });
+      setTimeout(() => setToast((t) => ({ ...t, show: false })), 5000);
+      setTimeout(() => setStatus('idle'), 2000);
     }
   };
 
@@ -162,7 +189,7 @@ export function Contact() {
               <Magnetic strength={0.35} className="mt-7">
                 <button
                   type="submit"
-                  disabled={status === 'loading' || status === 'success'}
+                  disabled={status === 'loading'}
                   data-cursor={status === 'success' ? 'Sent!' : 'Send'}
                   className="group flex w-full items-center justify-center gap-3 rounded-full bg-ink px-6 py-4 font-display text-[1.05rem] font-medium text-paper transition-all duration-300 hover:gap-4 disabled:opacity-70"
                 >
@@ -170,10 +197,6 @@ export function Contact() {
                     {status === 'loading' ? (
                       <motion.span key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2">
                         <Loader2 size={18} className="animate-spin" /> Sending…
-                      </motion.span>
-                    ) : status === 'success' ? (
-                      <motion.span key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2">
-                        <Check size={18} /> Message sent — I&rsquo;ll be in touch
                       </motion.span>
                     ) : (
                       <motion.span key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2">
@@ -185,16 +208,7 @@ export function Contact() {
                 </button>
               </Magnetic>
 
-              {status === 'error' && (
-                <p className="mt-4 text-center font-sans text-[0.85rem] text-coral">
-                  Something went wrong. Try again, or email me directly at {EMAIL}.
-                </p>
-              )}
-              {!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID && (
-                <p className="mt-4 text-center font-hand text-[0.9rem] text-stone">
-                  tip: opens your mail app if the form service isn&rsquo;t set up yet
-                </p>
-              )}
+              {/* Premium toast notification is activated on success/error */}
             </form>
           </Reveal>
         </div>
@@ -222,6 +236,36 @@ export function Contact() {
           border-color: hsl(var(--ink));
         }
       `}</style>
+
+      {/* Premium Success/Failure Toast Overlay */}
+      <AnimatePresence>
+        {toast.show && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            className={`fixed bottom-8 right-8 z-[100] max-w-sm rounded-xl border p-5 shadow-lg flex items-center gap-4 ${
+              toast.type === 'success' 
+                ? 'border-sage/40 bg-[#FAF6F0]' 
+                : 'border-coral/30 bg-[#FAF6F0]'
+            }`}
+          >
+            <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-bold ${
+              toast.type === 'success' 
+                ? 'bg-sage/10 text-sage' 
+                : 'bg-coral/10 text-coral'
+            }`}>
+              {toast.type === 'success' ? '✓' : '!'}
+            </div>
+            <div>
+              <div className="font-display text-sm font-semibold text-ink">
+                {toast.type === 'success' ? 'Thank you' : 'Error'}
+              </div>
+              <p className="font-sans text-[0.78rem] text-graphite leading-normal">{toast.message}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, Space_Grotesk, JetBrains_Mono, Caveat } from 'next/font/google';
 import { PaperCanvas, CustomCursor } from '@/components/paper-kit';
+import { ClientMotionConfig } from '@/components/client-config';
 
 const body = Inter({
   subsets: ['latin'],
@@ -52,9 +53,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${body.variable} ${display.variable} ${mono.variable} ${hand.variable}`}>
       <body className="font-sans antialiased">
-        <PaperCanvas />
-        <CustomCursor />
-        {children}
+        <ClientMotionConfig>
+          <PaperCanvas />
+          <CustomCursor />
+          {children}
+        </ClientMotionConfig>
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { useEffect, useRef, useState, memo } from 'react';
+import { motion, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import {
   Tape,
   StickyNote,
@@ -14,7 +14,7 @@ import {
   Reveal,
 } from '@/components/paper-kit';
 
-function MockSite() {
+const MockSite = memo(function MockSite() {
   return (
     <div className="h-full w-full overflow-hidden bg-white text-ink">
       <div className="flex h-10 items-center gap-1.5 border-b border-stone/10 bg-stone/5 px-4">
@@ -24,11 +24,19 @@ function MockSite() {
         <div className="ml-3 h-4 flex-1 rounded-md bg-white shadow-sm ring-1 ring-black/5" />
       </div>
       <div className="relative h-[calc(100%-2.5rem)] overflow-hidden bg-[hsl(38_30%_98%)]">
-        <motion.div
-          className="absolute inset-x-0 top-0"
-          animate={{ y: ['0%', '-50%'] }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'linear', repeatType: 'reverse' }}
-        >
+        <style>{`
+          @keyframes mocksite-scroll {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-50%); }
+          }
+          .animate-mocksite {
+            animation: mocksite-scroll 15s linear infinite paused;
+          }
+          .group:hover .animate-mocksite {
+            animation-play-state: running;
+          }
+        `}</style>
+        <div className="absolute inset-x-0 top-0 animate-mocksite">
           {/* refined clean layout */}
           <div className="p-4">
             <div className="h-20 rounded-xl bg-gradient-to-br from-ink/5 to-ink/10 shadow-sm ring-1 ring-ink/5" />
@@ -44,14 +52,14 @@ function MockSite() {
           <div className="mt-4 px-4 pb-4">
             <div className="h-24 rounded-xl bg-ink/90 shadow-lg" />
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
-}
+});
 
 // Hand-drawn arrow doodle component that animates as if being sketched
-function SketchArrow({ className }: { className?: string }) {
+const SketchArrow = memo(function SketchArrow({ className }: { className?: string }) {
   return (
     <svg
       width="50"
@@ -77,10 +85,10 @@ function SketchArrow({ className }: { className?: string }) {
       />
     </svg>
   );
-}
+});
 
 // Immediate load animation wrappers for bulletproof mounting near screen edges
-function HeroMaskReveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+const HeroMaskReveal = memo(function HeroMaskReveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
     <span className="relative inline-block overflow-hidden align-bottom">
       <motion.span
@@ -93,9 +101,9 @@ function HeroMaskReveal({ children, delay = 0 }: { children: React.ReactNode; de
       </motion.span>
     </span>
   );
-}
+});
 
-function HeroReveal({ children, delay = 0, y = 20 }: { children: React.ReactNode; delay?: number; y?: number }) {
+const HeroReveal = memo(function HeroReveal({ children, delay = 0, y = 20 }: { children: React.ReactNode; delay?: number; y?: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y }}
@@ -105,10 +113,10 @@ function HeroReveal({ children, delay = 0, y = 20 }: { children: React.ReactNode
       {children}
     </motion.div>
   );
-}
+});
 
 // Top-down Coffee Mug Component
-function CoffeeMug({ className = '' }: { className?: string }) {
+const CoffeeMug = memo(function CoffeeMug({ className = '' }: { className?: string }) {
   return (
     <div className={`relative w-20 h-20 rounded-full bg-gradient-to-br from-stone-200 via-stone-300 to-stone-400 shadow-[0_15px_30px_rgba(0,0,0,0.18)] flex items-center justify-center border border-white/40 ${className}`}>
       {/* Handle */}
@@ -123,10 +131,9 @@ function CoffeeMug({ className = '' }: { className?: string }) {
       </div>
     </div>
   );
-}
+});
 
-// Metal Ruler Component
-function MetalRuler({ className = '', rotate = 0 }: { className?: string; rotate?: number }) {
+const MetalRuler = memo(function MetalRuler({ className = '', rotate = 0 }: { className?: string; rotate?: number }) {
   return (
     <div
       className={`w-5 h-56 bg-gradient-to-r from-stone-300 via-stone-200 to-stone-400 border border-stone-400 rounded shadow-[0_8px_20px_rgba(0,0,0,0.08)] flex flex-col justify-between py-3 items-center select-none ${className}`}
@@ -142,10 +149,9 @@ function MetalRuler({ className = '', rotate = 0 }: { className?: string; rotate
       </div>
     </div>
   );
-}
+});
 
-// Mechanical Pencil Component
-function MechanicalPencil({ className = '', rotate = 0 }: { className?: string; rotate?: number }) {
+const MechanicalPencil = memo(function MechanicalPencil({ className = '', rotate = 0 }: { className?: string; rotate?: number }) {
   return (
     <div
       className={`w-2.5 h-48 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 rounded-full shadow-[0_6px_15px_rgba(0,0,0,0.1)] flex flex-col justify-between py-1 relative ${className}`}
@@ -163,10 +169,9 @@ function MechanicalPencil({ className = '', rotate = 0 }: { className?: string; 
       </div>
     </div>
   );
-}
+});
 
-// Color Swatches Fan
-function ColorSwatches({ className = '', rotate = 0 }: { className?: string; rotate?: number }) {
+const ColorSwatches = memo(function ColorSwatches({ className = '', rotate = 0 }: { className?: string; rotate?: number }) {
   return (
     <div
       className={`relative w-28 h-10 select-none ${className}`}
@@ -191,18 +196,11 @@ function ColorSwatches({ className = '', rotate = 0 }: { className?: string; rot
       </div>
     </div>
   );
-}
+});
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  });
-
-  const fadeOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scaleDown = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
-  const yParallax = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const spotlightRef = useRef<HTMLDivElement>(null);
 
   // Buttery smooth parallax springs (Linear/Framer influence)
   const mx = useMotionValue(0);
@@ -219,17 +217,24 @@ export function Hero() {
     const el = ref.current;
     if (!el) return;
 
+    let r = el.getBoundingClientRect();
+    const handleResize = () => {
+      r = el.getBoundingClientRect();
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+
     let frameId: number;
     const handleMouseMove = (e: MouseEvent) => {
       cancelAnimationFrame(frameId);
       frameId = requestAnimationFrame(() => {
-        const r = el.getBoundingClientRect();
-
         // Spotlight coordinates directly on DOM node style properties (avoids React re-renders)
         const mouseX = e.clientX - r.left;
         const mouseY = e.clientY - r.top;
-        el.style.setProperty('--mouse-x', `${mouseX}px`);
-        el.style.setProperty('--mouse-y', `${mouseY}px`);
+        const spotlight = spotlightRef.current;
+        if (spotlight) {
+          spotlight.style.setProperty('--mouse-x', `${mouseX}px`);
+          spotlight.style.setProperty('--mouse-y', `${mouseY}px`);
+        }
 
         // Mouse Parallax - disable on tablet/mobile screens (< 1024px)
         if (window.innerWidth < 1024) {
@@ -250,6 +255,7 @@ export function Hero() {
     el.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => {
       el.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(frameId);
     };
   }, [mx, my]);
@@ -267,6 +273,7 @@ export function Hero() {
 
       {/* Dynamic Cursor Spotlight Overlay (GPU-accelerated, uses CSS variables directly) */}
       <div
+        ref={spotlightRef}
         className="pointer-events-none absolute inset-0 z-0 opacity-55 transition-opacity duration-300"
         style={{
           background: `radial-gradient(500px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(255,244,214,0.45), transparent 85%)`
@@ -302,10 +309,7 @@ export function Hero() {
 
       <CornerMarks className="opacity-45" />
 
-      <motion.div
-        style={{ opacity: fadeOpacity, scale: scaleDown, y: yParallax } as any}
-        className="mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-20"
-      >
+      <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
         {/* ---------------- LEFT: Ultra-premium Typography ---------------- */}
         <div className="relative z-10 flex flex-col justify-center lg:-translate-y-12">
 
@@ -328,6 +332,18 @@ export function Hero() {
           </HeroReveal>
 
           <div className="relative">
+            {/* Left side blueprint handwritten annotations */}
+            <div className="absolute -left-20 -top-8 z-20 hidden xl:block">
+              <Annotation rotate={-8} className="text-sage text-[0.8rem]" arrow>
+                x
+              </Annotation>
+            </div>
+            <div className="absolute -right-16 top-2 z-20 hidden 2xl:block">
+              <Annotation rotate={6} className="text-stone text-[0.78rem]">
+                concept v2.0
+              </Annotation>
+            </div>
+
             <h1 className="font-display text-[10vw] sm:text-[7vw] lg:text-[4rem] xl:text-[4.5rem] font-bold tracking-[-0.03em] text-[#1a1a1a] leading-[1.03]">
               <HeroMaskReveal>
                 •   Think -
@@ -390,6 +406,13 @@ export function Hero() {
           {/* V2 Statistics - Clean & Subdued */}
           <HeroReveal delay={0.4}>
             <div className="mt-14 flex items-center gap-10 border-t border-ink/10 pt-6 relative">
+              {/* Handwritten success note */}
+              <div className="absolute left-[80%] -top-3 z-20 hidden md:block">
+                <Annotation rotate={12} className="text-coral/80 text-[0.75rem]">
+                  100% success rate ✓
+                </Annotation>
+              </div>
+
               <div>
                 <div className="font-display text-4xl font-semibold tracking-tight text-ink">03</div>
                 <div className="mt-1 font-mono text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-ink/50">Websites built</div>
@@ -417,13 +440,10 @@ export function Hero() {
             <div className="h-full w-full rounded-2xl bg-white/50" />
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* V2 Scroll Indicator */}
-      <motion.div
-        style={{ opacity: fadeOpacity } as any}
-        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-3"
-      >
+      <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-3">
         <span className="font-mono text-[0.6rem] font-semibold uppercase tracking-[0.25em] text-ink/40">Scroll</span>
         <div className="flex h-10 w-6 justify-center rounded-full border border-ink/20 p-1">
           <motion.div
@@ -432,44 +452,38 @@ export function Hero() {
             className="h-1.5 w-1.5 rounded-full bg-ink/60"
           />
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
 
-function DeskScene({ smx, smy }: { smx: any; smy: any }) {
-  // Parallax tracking mouse
-  const tBackX = useTransform(smx, [-1, 1], [15, -15]);
-  const tBackY = useTransform(smy, [-1, 1], [10, -10]);
+const DeskScene = memo(function DeskScene({ smx, smy }: { smx: any; smy: any }) {
+  // Parallax tracking mouse (only for laptop)
   const tMidX = useTransform(smx, [-1, 1], [25, -25]);
   const tMidY = useTransform(smy, [-1, 1], [18, -18]);
-  const tFrontX = useTransform(smx, [-1, 1], [-8, 8]);
-  const tFrontY = useTransform(smy, [-1, 1], [-5, 5]);
 
   // 3D Mockup Tilt
   const rotateX = useTransform(smy, [-1, 1], [-2.5, 2.5]);
   const rotateY = useTransform(smx, [-1, 1], [2.5, -2.5]);
 
-  // Nested Scroll Parallax
-  const { scrollY } = useScroll();
-  const scrollBackY = useTransform(scrollY, [0, 800], [0, -45]);
-  const scrollMidY = useTransform(scrollY, [0, 800], [0, -15]);
-  const scrollFrontY = useTransform(scrollY, [0, 800], [0, 25]);
-
   return (
     <div className="relative h-full w-full">
-      {/* Warm ambient spotlight behind laptop (reduced blur radius for performance) */}
-      <div className="absolute left-[30%] top-[25%] -translate-x-1/2 w-64 h-64 rounded-full bg-gradient-to-tr from-gold/10 via-coral/5 to-transparent blur-2xl opacity-80 pointer-events-none" />
+      {/* Warm ambient spotlight behind laptop - removed expensive blur filter */}
+      <div
+        className="absolute left-[30%] top-[25%] -translate-x-1/2 w-64 h-64 rounded-full opacity-80 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(212,163,89,0.12) 0%, rgba(240,113,103,0.06) 50%, transparent 100%)'
+        }}
+      />
 
-      {/* ---- BACK LAYER: Blueprint Sheets & Notebook ---- */}
+      {/* ---- BACK LAYER: Blueprint Sheets & Notebook (Static after entrance) ---- */}
       <motion.div
-        style={{ y: scrollBackY, willChange: 'transform' }}
+        initial={{ opacity: 0, x: -20, y: -10 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
         className="absolute left-[5%] top-[10%] w-[62%] lg:w-[57%]"
       >
-        <motion.div
-          style={{ x: tBackX, y: tBackY }}
-          className="relative rounded-xl border border-ink/10 bg-[hsl(38_30%_96%)] p-4 shadow-[0_20px_40px_rgb(0,0,0,0.03)] ring-1 ring-white/50"
-        >
+        <div className="relative rounded-xl border border-ink/10 bg-[hsl(38_30%_96%)] p-4 shadow-[0_20px_40px_rgb(0,0,0,0.03)] ring-1 ring-white/50">
           {/* Faint coffee cup ring stain on blueprint */}
           <div className="absolute -left-1 -bottom-1 w-14 h-14 rounded-full border border-[#3D2314]/5 bg-[#3D2314]/1 opacity-60 pointer-events-none" />
 
@@ -492,20 +506,22 @@ function DeskScene({ smx, smy }: { smx: any; smy: any }) {
             </div>
           </div>
           <Tape className="absolute -left-4 top-8 h-6 w-20 opacity-80" rotate={-25} color="sage" />
-        </motion.div>
+        </div>
       </motion.div>
 
-      {/* ---- MID LAYER: Laptop Device & Coffee Mug ---- */}
+      {/* ---- MID LAYER: Laptop Device & Coffee Mug (Active mouse tracking + entrance) ---- */}
       <motion.div
-        style={{ y: scrollMidY, willChange: 'transform' }}
+        initial={{ opacity: 0, scale: 0.96, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 0.8, 0.24, 1] }}
         className="absolute right-[2%] top-[20%] w-[85%] lg:w-[80%]"
       >
         <motion.div
           style={{ x: tMidX, y: tMidY, rotateX, rotateY, transformStyle: 'preserve-3d' }}
           className="relative group transition-shadow duration-300"
         >
-          {/* Glassy, modern laptop frame (reduced blur intensity) */}
-          <div className="rounded-t-2xl border border-white/20 bg-[#f0f0f0] p-3 shadow-[0_30px_60px_rgb(0,0,0,0.12)] group-hover:shadow-[0_40px_70px_rgb(0,0,0,0.16)] ring-1 ring-black/5 backdrop-blur-md">
+          {/* Glassy, modern laptop frame (removed expensive backdrop-blur) */}
+          <div className="rounded-t-2xl border border-white/20 bg-[#f0f0f0]/95 p-3 shadow-[0_30px_60px_rgb(0,0,0,0.12)] group-hover:shadow-[0_40px_70px_rgb(0,0,0,0.16)] ring-1 ring-black/5">
             <div className="overflow-hidden rounded-xl border border-black/5 bg-white shadow-inner">
               {/* Refinement on Mocksite screen: realistic UI reflections */}
               <div className="relative h-[260px] sm:h-[320px]">
@@ -528,17 +544,16 @@ function DeskScene({ smx, smy }: { smx: any; smy: any }) {
         </motion.div>
       </motion.div>
 
-      {/* ---- FRONT LAYER: Sketches, Notebook, Mug & Tools ---- */}
+      {/* ---- FRONT LAYER: Sketches, Notebook, Mug & Tools (Entrance) ---- */}
       <motion.div
-        style={{ y: scrollFrontY, willChange: 'transform' }}
+        initial={{ opacity: 0, y: 30, rotate: -4 }}
+        animate={{ opacity: 1, y: 0, rotate: -2 }}
+        transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
         className="absolute -left-[5%] bottom-[8%] w-[65%] lg:w-[58%] z-20"
       >
-        <motion.div
-          style={{ x: tFrontX, y: tFrontY }}
-          className="relative flex flex-col gap-6"
-        >
+        <div className="relative flex flex-col gap-6">
           {/* Open Sketchbook Spiral notebook */}
-          <div className="relative w-72 sm:w-80 h-48 bg-[#FBF9F6] border border-stone-200 rounded-lg shadow-lg relative p-4 flex flex-col justify-between" style={{ transform: 'rotate(-2deg)' }}>
+          <div className="relative w-72 sm:w-80 h-48 bg-[#FBF9F6] border border-stone-200 rounded-lg shadow-lg p-4 flex flex-col justify-between" style={{ transform: 'rotate(-2deg)' }}>
             {/* Spiral binding rings */}
             <div className="absolute left-[-6px] top-4 bottom-4 flex flex-col justify-between w-3">
               {Array.from({ length: 9 }).map((_, i) => (
@@ -598,60 +613,55 @@ function DeskScene({ smx, smy }: { smx: any; smy: any }) {
             </svg>
           </div>
 
-          {/* Floating Sticky Note (animate once on mount to avoid paint cost) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="absolute right-[-10%] bottom-[-5%] z-20 w-40"
-          >
+          {/* Floating Sticky Note */}
+          <div className="absolute right-[-10%] bottom-[-5%] z-20 w-40">
             <StickyNote color="coral" pin className="shadow-[0_10px_30px_rgb(0,0,0,0.1)]">
               <span className="font-sans text-[0.9rem] font-medium leading-snug text-ink/80">focus on details & spacing ✨</span>
             </StickyNote>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </motion.div>
 
-      {/* ---- ADDED DESK PROPS: Ruler, Pencil & Swatches ---- */}
+      {/* ---- ADDED DESK PROPS: Ruler, Pencil & Swatches (Entrance) ---- */}
 
       {/* Metal Ruler */}
       <motion.div
-        style={{ y: scrollMidY, willChange: 'transform' }}
+        initial={{ opacity: 0, scale: 0.9, rotate: -80 }}
+        animate={{ opacity: 1, scale: 1, rotate: -65 }}
+        transition={{ duration: 0.7, delay: 0.35, ease: 'easeOut' }}
         className="absolute right-[5%] bottom-[12%] z-10 hidden sm:block"
       >
-        <motion.div style={{ x: tMidX, y: tMidY }}>
-          <MetalRuler rotate={-65} />
-        </motion.div>
+        <MetalRuler rotate={-65} />
       </motion.div>
 
       {/* Mechanical Pencil */}
       <motion.div
-        style={{ y: scrollFrontY, willChange: 'transform' }}
+        initial={{ opacity: 0, scale: 0.9, rotate: 60 }}
+        animate={{ opacity: 1, scale: 1, rotate: 75 }}
+        transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
         className="absolute left-[2%] bottom-[2%] z-30"
       >
-        <motion.div style={{ x: tFrontX, y: tFrontY }}>
-          <MechanicalPencil rotate={75} />
-        </motion.div>
+        <MechanicalPencil rotate={75} />
       </motion.div>
 
-      {/* Coffee Mug top-down view (placed safely at left-[24%] bottom-[6%] to clear sticky note) */}
+      {/* Coffee Mug top-down view */}
       <motion.div
-        style={{ y: scrollFrontY, willChange: 'transform' }}
+        initial={{ opacity: 0, scale: 0.8, rotate: -20 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ duration: 0.7, delay: 0.45, ease: 'easeOut' }}
         className="absolute left-[24%] bottom-[6%] z-30 hidden lg:block"
       >
-        <motion.div style={{ x: tFrontX, y: tFrontY }}>
-          <CoffeeMug />
-        </motion.div>
+        <CoffeeMug />
       </motion.div>
 
       {/* Color Swatches */}
       <motion.div
-        style={{ y: scrollBackY, willChange: 'transform' }}
+        initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
+        animate={{ opacity: 1, scale: 1, rotate: 15 }}
+        transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
         className="absolute right-[3%] top-[4%] z-10 hidden xl:block"
       >
-        <motion.div style={{ x: tBackX, y: tBackY }}>
-          <ColorSwatches rotate={15} />
-        </motion.div>
+        <ColorSwatches rotate={15} />
       </motion.div>
 
       {/* ---- FOREGROUND: Stamps & Details (Static layers to avoid layout paint costs) ---- */}
@@ -691,4 +701,4 @@ function DeskScene({ smx, smy }: { smx: any; smy: any }) {
       </div>
     </div>
   );
-}
+});

@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import {
   Reveal,
   SectionIndex,
@@ -124,6 +124,13 @@ const projects: Project[] = [
   },
 ];
 
+// stamps mapping for case study feel (moved outside render function)
+const stamps: Record<string, { text: string; color: 'sage' | 'coral' | 'gold'; rotate: number; pos: string }> = {
+  '01': { text: 'v2.0', color: 'sage', rotate: -8, pos: '-top-10 -right-6' },
+  '02': { text: 'Approved', color: 'coral', rotate: 12, pos: '-bottom-10 right-10' },
+  '03': { text: 'Launch', color: 'gold', rotate: -15, pos: '-top-8 -left-6' },
+};
+
 export function Work() {
   return (
     <section id="work" className="relative px-5 py-28 sm:px-8 lg:px-12 lg:py-40">
@@ -131,7 +138,7 @@ export function Work() {
 
       {/* section header */}
       <Reveal className="mx-auto mb-20 max-w-[1280px]">
-        <SectionIndex n="§" label="Selected Work" className="mb-8" />
+        <SectionIndex n="01" label="Selected Work" className="mb-8" />
         <div className="flex flex-col items-start justify-between gap-6 border-t border-rule pt-8 lg:flex-row lg:items-end">
           <h2 className="display max-w-3xl text-[10vw] leading-[0.9] text-ink sm:text-[7vw] lg:text-[5.5rem]">
             Works,<br />
@@ -154,41 +161,32 @@ export function Work() {
 }
 
 function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-  const browserY = useTransform(scrollYProgress, [0, 1], [48, -48]);
-  const noteY = useTransform(scrollYProgress, [0, 1], [24, -24]);
-  const watermarkY = useTransform(scrollYProgress, [0, 1], [0, -36]);
-
-  // stamps mapping for case study feel
-  const stamps: Record<string, { text: string; color: 'sage' | 'coral' | 'gold'; rotate: number; pos: string }> = {
-    '01': { text: 'v2.0', color: 'sage', rotate: -8, pos: '-top-10 -right-6' },
-    '02': { text: 'Approved', color: 'coral', rotate: 12, pos: '-bottom-10 right-10' },
-    '03': { text: 'Launch', color: 'gold', rotate: -15, pos: '-top-8 -left-6' },
-  };
+  const [inView, setInView] = useState(false);
 
   const currentStamp = stamps[project.index];
 
   return (
-    <div ref={ref} className="relative">
-      {/* big watermark index */}
-      <motion.div
-        style={{ y: watermarkY, willChange: 'transform' }}
+    <motion.div
+      onViewportEnter={() => setInView(true)}
+      viewport={{ once: true, margin: '200px' }}
+      className="relative px-6 py-12 border border-ink/[0.03] rounded-2xl bg-paper/20 my-10"
+    >
+      <CornerMarks className="opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 blueprint-lines pointer-events-none opacity-[0.05]" />
+      {/* big watermark index (static to avoid expensive GPU repaints on scroll) */}
+      <div
         className="pointer-events-none absolute -top-16 right-0 z-0 select-none opacity-[0.07]"
         aria-hidden
       >
         <span className="editorial-num text-[18rem] leading-none text-ink">
           {project.index}
         </span>
-      </motion.div>
+      </div>
 
       {/* featured badge */}
       {project.featured && (
         <Reveal className="absolute -top-10 left-0 z-20">
-          <span className="inline-flex items-center gap-2 rounded-full border border-coral/50 bg-paper/80 px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-coral backdrop-blur-sm">
+          <span className="inline-flex items-center gap-2 rounded-full border border-coral/50 bg-paper px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-coral">
             <span className="h-1.5 w-1.5 rounded-full bg-coral" /> Featured Project
           </span>
         </Reveal>
@@ -207,24 +205,21 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
               <span className="editorial-label">{project.category}</span>
               <span className="editorial-label text-rule">· {project.year}</span>
             </div>
-          </Reveal>
 
-          <Reveal delay={0.05}>
-            <h3 className="display text-[9vw] leading-[0.9] text-ink sm:text-[6vw] lg:text-[4.4rem]">
+            <h3 className="display text-[9vw] leading-[0.9] text-ink sm:text-[6vw] lg:text-[4.4rem] mt-3">
               {project.name}
             </h3>
-          </Reveal>
-          <Reveal delay={0.1}>
+
             <p className="mt-3 font-display text-lg italic text-stone">{project.tagline}</p>
-          </Reveal>
-          <Reveal delay={0.15}>
+
             <p className="mt-5 max-w-md text-pretty font-sans text-[0.98rem] leading-relaxed text-graphite">
               {project.description}
             </p>
           </Reveal>
 
-          {/* tech tags as a designed system */}
-          <Reveal delay={0.2}>
+          {/* Grouped details to reduce multiple IntersectionObserver instances */}
+          <Reveal delay={0.15}>
+            {/* tech tags as a designed system */}
             <div className="mt-7">
               <div className="editorial-label mb-2.5">Technologies</div>
               <div className="flex flex-wrap gap-2">
@@ -238,10 +233,8 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
                 ))}
               </div>
             </div>
-          </Reveal>
 
-          {/* genuine specs — no fake metrics */}
-          <Reveal delay={0.25}>
+            {/* genuine specs — no fake metrics */}
             <div className="mt-7 grid grid-cols-2 gap-x-8 gap-y-4 border-t border-rule pt-5 sm:grid-cols-4">
               {project.specs.map((s) => (
                 <div key={s.label}>
@@ -250,11 +243,9 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
                 </div>
               ))}
             </div>
-          </Reveal>
 
-          {/* focus areas — only for featured project */}
-          {project.focusAreas && (
-            <Reveal delay={0.28}>
+            {/* focus areas — only for featured project */}
+            {project.focusAreas && (
               <div className="mt-7">
                 <div className="editorial-label mb-2.5">What I worked on</div>
                 <div className="flex flex-wrap gap-x-5 gap-y-1.5">
@@ -266,11 +257,9 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
                   ))}
                 </div>
               </div>
-            </Reveal>
-          )}
+            )}
 
-          {/* CTA */}
-          <Reveal delay={0.3}>
+            {/* CTA */}
             <a
               href={project.url}
               target="_blank"
@@ -286,7 +275,7 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
 
         {/* browser mock + annotations */}
         <div className="relative lg:[direction:ltr]">
-          <motion.div style={{ y: browserY }} className="relative z-10">
+          <div className="relative z-10">
             {/* Added Paperclip for extra tactile feel */}
             <PaperClip className="absolute -left-2 -top-4 z-30" rotate={-15} />
 
@@ -296,12 +285,12 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
               rotate={flip ? 3 : -3}
               tapeColor={project.tapeColor}
               index={project.index}
+              inView={inView}
             />
 
             {/* Stamp Layer */}
             {currentStamp && (
               <motion.div
-                style={{ y: noteY, willChange: 'transform' }}
                 initial={{ scale: 0, rotate: -20 }}
                 whileInView={{ scale: 1, rotate: currentStamp.rotate }}
                 viewport={{ once: true }}
@@ -313,13 +302,12 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
                 </Stamp>
               </motion.div>
             )}
-          </motion.div>
+          </div>
 
-          {/* pinned annotation notes */}
+          {/* pinned annotation notes (static wrapper to prevent scroll calculations) */}
           {project.notes.map((note, ni) => (
             <motion.div
               key={ni}
-              style={{ y: noteY, willChange: 'transform' }}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -344,6 +332,6 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,7 +1,5 @@
-'use client';
-
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Tape, CornerMarks, Annotation, Stamp, PaperClip, Highlight } from '@/components/paper-kit';
 
 /* Each project supplies a "site" renderer so every browser mock looks unique */
@@ -15,6 +13,7 @@ export function BrowserMock({
   tapeColor = 'gold',
   index = '01',
   metrics,
+  inView = false,
 }: {
   url: string;
   renderSite: () => JSX.Element;
@@ -23,27 +22,20 @@ export function BrowserMock({
   tapeColor?: 'gold' | 'coral' | 'sage' | 'lavender';
   index?: string;
   metrics?: { label: string; value: string }[];
+  inView?: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
-
   const displayUrl = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
   return (
-    <motion.div
-      ref={ref}
-      style={{ y, rotate }}
-      className={`relative ${className}`}
+    <div
+      style={{ transform: `rotate(${rotate}deg)` }}
+      className={`relative group ${className}`}
     >
       <Tape className="absolute -top-2.5 left-8 z-30 h-5 w-24" rotate={-5} color={tapeColor} />
       <PaperClip className="absolute -right-1 -top-3 z-30" rotate={-20} />
 
       {/* browser chrome */}
-      <div className="paper-edge overflow-hidden rounded-xl border border-ink/15 bg-paper shadow-2xl">
+      <div className="paper-edge overflow-hidden rounded-xl border border-ink/15 bg-paper shadow-lg">
         <div className="flex items-center gap-2 border-b border-rule/60 bg-[hsl(38_30%_96%)] px-4 py-2.5">
           <span className="h-2.5 w-2.5 rounded-full bg-coral/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-gold/80" />
@@ -61,7 +53,7 @@ export function BrowserMock({
         {/* viewport */}
         <div className="relative aspect-[16/10] w-full overflow-hidden bg-paper">
           <CornerMarks className="opacity-30" />
-          {renderSite()}
+          {inView ? renderSite() : <div className="h-full w-full bg-paper" />}
         </div>
 
         {/* metrics bar */}
@@ -76,7 +68,7 @@ export function BrowserMock({
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -94,15 +86,40 @@ export function AutoScroll({
   duration?: number;
   distance?: string;
 }) {
+  const uniqueId = useRef('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    uniqueId.current = `autoscroll-${Math.random().toString(36).substring(2, 9)}`;
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className={`relative h-full w-full overflow-hidden ${className}`}>
+        <div className="absolute inset-x-0 top-0">{children}</div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-paper to-transparent" />
+      </div>
+    );
+  }
+
   return (
     <div className={`relative h-full w-full overflow-hidden ${className}`}>
-      <motion.div
-        className="absolute inset-x-0 top-0"
-        animate={{ y: ['0%', `-${distance}`] }}
-        transition={{ duration, repeat: Infinity, ease: 'easeInOut', repeatType: 'reverse' }}
-      >
+      <style>{`
+        @keyframes ${uniqueId.current} {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-${distance}); }
+        }
+        .animate-${uniqueId.current} {
+          animation: ${uniqueId.current} ${duration}s ease-in-out infinite paused;
+        }
+        .group:hover .animate-${uniqueId.current} {
+          animation-play-state: running;
+        }
+      `}</style>
+      <div className={`absolute inset-x-0 top-0 animate-${uniqueId.current}`}>
         {children}
-      </motion.div>
+      </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-paper to-transparent" />
     </div>
   );
@@ -115,11 +132,16 @@ export function EliteCosmoSite() {
   return (
     <AutoScroll distance="45%" duration={16}>
       <div className="bg-[#FAF6F0] text-[#3C2A21] font-serif pb-8 min-h-[500px] relative">
-        {/* Soft luxury glow background */}
-        <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-gradient-to-bl from-[#FFE8D6]/40 via-[#FDF5E6]/30 to-transparent blur-2xl pointer-events-none animate-pulse" />
+        {/* Soft luxury glow background without expensive blur filter */}
+        <div
+          className="absolute top-0 right-0 w-48 h-48 rounded-full pointer-events-none animate-pulse"
+          style={{
+            background: 'radial-gradient(circle at 100% 0%, rgba(255,232,214,0.4) 0%, rgba(253,245,230,0.2) 50%, transparent 100%)'
+          }}
+        />
 
-        {/* Navbar */}
-        <div className="bg-[#FAF6F0]/90 backdrop-blur-md border-b border-[#3C2A21]/5 px-4 py-2.5 flex items-center justify-between sticky top-0 z-30">
+        {/* Navbar - removed expensive backdrop-blur */}
+        <div className="bg-[#FAF6F0]/95 border-b border-[#3C2A21]/5 px-4 py-2.5 flex items-center justify-between sticky top-0 z-30">
           <div className="flex items-center gap-1.5">
             <span className="text-[0.45rem] font-serif tracking-[0.15em] font-bold text-[#D4A373]">✦ ELITE COSMO</span>
           </div>
@@ -157,21 +179,20 @@ export function EliteCosmoSite() {
           </div>
         </div>
 
-        {/* Floating Treatment Cards Gallery */}
         <div className="mt-8 grid grid-cols-3 gap-3 px-4">
-          <div className="bg-white border border-[#E9D8A6]/20 rounded-xl p-3 shadow-[0_10px_25px_rgba(212,163,115,0.05)] hover:-translate-y-1 transition duration-300">
+          <div className="bg-white border border-[#E9D8A6]/20 rounded-xl p-3 shadow-sm hover:-translate-y-1 transition duration-300">
             <div className="aspect-square rounded-lg bg-gradient-to-br from-[#FFE8D6] to-[#FAF6F0] mb-2 border border-[#E6CCB2]/20 flex items-center justify-center text-[0.7rem]">🌸</div>
             <h4 className="text-[0.42rem] font-bold">Skin Rejuvenation</h4>
             <div className="w-8 h-[1px] bg-[#D4A373] mt-1" />
             <p className="text-[0.32rem] text-slate-400 font-sans mt-1">Custom HydraFacials</p>
           </div>
-          <div className="bg-white border border-[#E9D8A6]/20 rounded-xl p-3 shadow-[0_10px_25px_rgba(212,163,115,0.05)] hover:-translate-y-1 transition duration-300">
+          <div className="bg-white border border-[#E9D8A6]/20 rounded-xl p-3 shadow-sm hover:-translate-y-1 transition duration-300">
             <div className="aspect-square rounded-lg bg-gradient-to-br from-[#E6CCB2] to-[#FAF6F0] mb-2 border border-[#E6CCB2]/20 flex items-center justify-center text-[0.7rem]">✨</div>
             <h4 className="text-[0.42rem] font-bold">Laser Therapy</h4>
             <div className="w-8 h-[1px] bg-[#D4A373] mt-1" />
             <p className="text-[0.32rem] text-slate-400 font-sans mt-1">USFDA Approved Lasers</p>
           </div>
-          <div className="bg-white border border-[#E9D8A6]/20 rounded-xl p-3 shadow-[0_10px_25px_rgba(212,163,115,0.05)] hover:-translate-y-1 transition duration-300">
+          <div className="bg-white border border-[#E9D8A6]/20 rounded-xl p-3 shadow-sm hover:-translate-y-1 transition duration-300">
             <div className="aspect-square rounded-lg bg-gradient-to-br from-[#D4A373]/30 to-[#FAF6F0] mb-2 border border-[#E6CCB2]/20 flex items-center justify-center text-[0.7rem]">🌱</div>
             <h4 className="text-[0.42rem] font-bold">Hair Transplant</h4>
             <div className="w-8 h-[1px] bg-[#D4A373] mt-1" />
@@ -203,8 +224,8 @@ export function DealItSite() {
         {/* Mint grid decor */}
         <div className="absolute inset-0 blueprint-lines opacity-[0.06] pointer-events-none" />
 
-        {/* Navbar */}
-        <div className="bg-[#ECF7F2]/95 backdrop-blur-md border-b border-[#0A2F1D]/5 px-4 py-2.5 flex items-center justify-between sticky top-0 z-30">
+        {/* Navbar - removed expensive backdrop-blur */}
+        <div className="bg-[#ECF7F2]/98 border-b border-[#0A2F1D]/5 px-4 py-2.5 flex items-center justify-between sticky top-0 z-30">
           <div className="flex items-center gap-1.5">
             <div className="h-4.5 w-4.5 rounded-lg bg-[#0F9F58] flex items-center justify-center text-white text-[0.42rem] font-bold shadow-sm">
               ✓
@@ -235,7 +256,7 @@ export function DealItSite() {
         </div>
 
         {/* Escrow Dashboard Widget */}
-        <div className="mt-6 mx-4 bg-white border border-[#A5D6A7]/30 rounded-xl p-3 shadow-md">
+        <div className="mt-6 mx-4 bg-white border border-[#A5D6A7]/30 rounded-xl p-3 shadow-sm">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2">
             <div>
               <span className="text-[0.32rem] text-slate-400 font-bold uppercase tracking-wider block">Active Deals</span>
@@ -294,8 +315,8 @@ export function GaddamClinicSite() {
         {/* Subtle grid backdrop */}
         <div className="absolute inset-0 blueprint-lines opacity-[0.06] pointer-events-none" />
 
-        {/* Navbar */}
-        <div className="bg-[#F0F5FA]/95 backdrop-blur-md border-b border-[#0F2537]/5 px-4 py-2.5 flex items-center justify-between sticky top-0 z-30">
+        {/* Navbar - removed expensive backdrop-blur */}
+        <div className="bg-[#F0F5FA]/98 border-b border-[#0F2537]/5 px-4 py-2.5 flex items-center justify-between sticky top-0 z-30">
           <div className="flex items-center gap-1.5">
             <div className="h-4.5 w-4.5 rounded-full bg-[#1E6091] flex items-center justify-center text-white text-[0.45rem] font-bold shadow-sm">
               🩺
@@ -336,7 +357,7 @@ export function GaddamClinicSite() {
 
           {/* Right Mockup Profile */}
           <div className="col-span-5 relative">
-            <div className="aspect-[4/3] w-full rounded-xl bg-white border border-blue-100 shadow-md relative overflow-hidden flex flex-col justify-between p-2">
+            <div className="aspect-[4/3] w-full rounded-xl bg-white border border-blue-100 shadow-sm relative overflow-hidden flex flex-col justify-between p-2">
               <div className="flex items-center gap-1.5">
                 <span className="h-6 w-6 rounded-full bg-[#F0F5FA] border border-[#1E6091]/10 flex items-center justify-center text-[0.45rem]">👨‍⚕️</span>
                 <div className="flex flex-col leading-none">
