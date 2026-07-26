@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import emailjs from '@emailjs/browser';
 import { Reveal, SectionIndex, Stamp, Annotation, Highlight, Magnetic, CornerMarks, PencilArrow } from '@/components/paper-kit';
@@ -20,6 +20,17 @@ export function Contact() {
     message: '',
     type: 'success',
   });
+
+  useEffect(() => {
+    const handlePrefill = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (customEvent.detail?.message) {
+        setForm((f) => ({ ...f, message: customEvent.detail.message }));
+      }
+    };
+    window.addEventListener('prefill-contact', handlePrefill);
+    return () => window.removeEventListener('prefill-contact', handlePrefill);
+  }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));

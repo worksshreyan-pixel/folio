@@ -414,12 +414,12 @@ export function Hero() {
               </div>
 
               <div>
-                <div className="font-display text-4xl font-semibold tracking-tight text-ink">03</div>
+                <div className="font-display text-4xl font-semibold tracking-tight text-ink">05</div>
                 <div className="mt-1 font-mono text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-ink/50">Websites built</div>
               </div>
               <div className="h-10 w-px bg-ink/10" />
               <div>
-                <div className="font-display text-4xl font-semibold tracking-tight text-ink">03</div>
+                <div className="font-display text-4xl font-semibold tracking-tight text-ink">05</div>
                 <div className="mt-1 font-mono text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-ink/50">Websites live</div>
               </div>
 

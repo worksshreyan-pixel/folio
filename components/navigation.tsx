@@ -92,9 +92,6 @@ export function Navigation() {
             <span className="flex h-7 w-7 items-center justify-center rounded-full border border-ink/30 font-display text-sm font-semibold text-ink transition-transform duration-300 group-hover:rotate-[-8deg]">
               S
             </span>
-            <span className="hidden font-display text-[0.95rem] font-medium tracking-tight text-ink sm:block">
-              Shreyan
-            </span>
             </button>
           </div>
 

@@ -17,6 +17,8 @@ import {
   EliteCosmoSite,
   GaddamClinicSite,
   DealItSite,
+  DoctorTemplateSite,
+  ClinicTemplateSite,
   AnnotationChip,
 } from '@/components/browser-mock';
 import { ArrowUpRight } from 'lucide-react';
@@ -38,17 +40,19 @@ type Project = {
   renderSite: () => JSX.Element;
   featured?: boolean;
   focusAreas?: string[];
+  githubUrl?: string;
+  isTemplate?: boolean;
 };
 
 const projects: Project[] = [
   {
     index: '01',
-    name: 'Dealit',
+    name: 'Deal-it',
     tagline: 'Personal SaaS project · featured',
-    category: 'SaaS · Marketplace',
+    category: 'SaaS Product Concept',
     year: '2026',
     description:
-      'Dealit is a secure digital delivery marketplace designed for creators, freelancers and agencies. It focuses on secure file delivery, private deals, escrow-style payments and a premium user experience. Built while exploring AI-assisted development, modern SaaS architecture and product design.',
+      'A premium SaaS concept focused on secure digital product delivery and private transactions.',
     url: 'https://dealit-ashen.vercel.app/',
     tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase'],
     specs: [
@@ -65,27 +69,22 @@ const projects: Project[] = [
     renderSite: DealItSite,
     featured: true,
     focusAreas: [
-      'Product Design',
-      'User Experience',
-      'Frontend Development',
-      'Secure Digital Delivery',
-      'Marketplace Concepts',
-      'AI-assisted Development Workflow',
-      'Modern SaaS Architecture',
-      'Responsive Design',
-      'Continuous Iteration',
+      'Product thinking',
+      'Complex workflows',
+      'Modern SaaS UI',
+      'Business-focused design',
     ],
   },
   {
     index: '02',
     name: 'Elite Cosmo Clinic',
     tagline: 'Professional clinic website',
-    category: 'Healthcare',
+    category: 'Professional Clinic Website',
     year: '2026',
     description:
-      'A professional website for a cosmetic clinic, built to make appointment booking effortless, establish trust with new patients, and give the clinic a modern, credible online presence that stands out in a competitive market.',
+      'A premium healthcare website concept designed for a modern cosmetic clinic, focusing on trust, branding, and patient conversion.',
     url: 'https://cosmo.examonly2025.workers.dev/',
-    tech: ['Next.js', 'React', 'Tailwind CSS', 'Framer Motion'],
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
     specs: [
       { label: 'Industry', value: 'Cosmetic Clinic' },
       { label: 'Role', value: 'Design & Development' },
@@ -98,17 +97,24 @@ const projects: Project[] = [
     ],
     tapeColor: 'lavender',
     renderSite: EliteCosmoSite,
+    focusAreas: [
+      'Luxury Aesthetic Design',
+      'Premium Hero Sections',
+      'Patient Conversion Layouts',
+      'Custom Appointment Booking',
+      'Interactive Treatments Grid',
+    ],
   },
   {
     index: '03',
     name: 'Dr. Gaddam Clinic',
     tagline: 'Professional clinic website',
-    category: 'Healthcare',
+    category: 'Professional Clinic Website',
     year: '2026',
     description:
-      'A professional website for Dr. Gaddam Clinic, designed to streamline appointment booking, strengthen the clinic’s modern online presence, improve the patient experience, and improve visibility so patients can find and reach the clinic easily.',
+      'A doctor-focused healthcare website concept designed around credibility, accessibility, and patient communication.',
     url: 'https://vibe-bolt.vercel.app/',
-    tech: ['Next.js', 'React', 'Tailwind CSS', 'Framer Motion'],
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
     specs: [
       { label: 'Industry', value: 'General Clinic' },
       { label: 'Role', value: 'Design & Development' },
@@ -121,14 +127,94 @@ const projects: Project[] = [
     ],
     tapeColor: 'coral',
     renderSite: GaddamClinicSite,
+    focusAreas: [
+      'Approachable Doctor Identity',
+      'Credibility & Patient Reviews',
+      'Direct Booking Integration',
+      'Interactive Vitals Monitor',
+      'Service-focused Architecture',
+    ],
+  },
+  {
+    index: '04',
+    name: 'Doctor Template',
+    tagline: 'Reusable Website System',
+    category: 'Reusable Website System',
+    year: '2026',
+    description:
+      'A reusable doctor website template designed to help healthcare professionals establish a premium online presence quickly.',
+    url: 'https://clinic-gilt-ten.vercel.app/',
+    isTemplate: true,
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+    specs: [
+      { label: 'Suitable For', value: 'Individual Doctors & Consultants' },
+      { label: 'Customization', value: 'Config Driven' },
+      { label: 'Architecture', value: 'Reusable System' },
+      { label: 'Speed', value: '1-Day Setup' },
+    ],
+    notes: [
+      { text: '1-day setup — config-driven', color: 'sage', rotate: 4, pos: '-left-6 top-8' },
+      { text: 'direct WhatsApp leads', color: 'gold', rotate: -3, pos: 'right-2 -bottom-6' },
+    ],
+    tapeColor: 'sage',
+    renderSite: DoctorTemplateSite,
+    focusAreas: [
+      'Premium Hero Section',
+      'Doctor Profile Sections',
+      'Appointment Form',
+      'WhatsApp Integration',
+      'Responsive Design',
+      'SEO Ready',
+      'Config Driven',
+      'Easy Customization',
+      'Reusable Components',
+      'Smooth Animations',
+    ],
+  },
+  {
+    index: '05',
+    name: 'Clinic Template',
+    tagline: 'Reusable Website System',
+    category: 'Reusable Website System',
+    year: '2026',
+    description:
+      'A reusable healthcare website system built for clinics and medical businesses with scalable components and customization support.',
+    url: 'https://dr-cyan-seven.vercel.app/',
+    isTemplate: true,
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+    specs: [
+      { label: 'Suitable For', value: 'General & Multispeciality Clinics' },
+      { label: 'Customization', value: 'Config Driven Architecture' },
+      { label: 'Performance', value: 'Optimized Score 100' },
+      { label: 'Speed', value: 'Fast Delivery' },
+    ],
+    notes: [
+      { text: 'conversion optimized layout', color: 'lavender', rotate: -4, pos: '-left-4 top-16' },
+      { text: 'fully reusable components', color: 'sage', rotate: 3, pos: 'right-0 -bottom-4' },
+    ],
+    tapeColor: 'coral',
+    renderSite: ClinicTemplateSite,
+    focusAreas: [
+      'Conversion Focused Layout',
+      'Appointment System',
+      'WhatsApp Integration',
+      'Responsive Design',
+      'SEO Ready',
+      'Config Driven Architecture',
+      'Easy Client Customization',
+      'Reusable Components',
+      'Premium UI',
+      'Optimized Performance',
+    ],
   },
 ];
 
-// stamps mapping for case study feel (moved outside render function)
 const stamps: Record<string, { text: string; color: 'sage' | 'coral' | 'gold'; rotate: number; pos: string }> = {
   '01': { text: 'v2.0', color: 'sage', rotate: -8, pos: '-top-10 -right-6' },
   '02': { text: 'Approved', color: 'coral', rotate: 12, pos: '-bottom-10 right-10' },
   '03': { text: 'Launch', color: 'gold', rotate: -15, pos: '-top-8 -left-6' },
+  '04': { text: 'System', color: 'sage', rotate: 10, pos: '-bottom-10 right-6' },
+  '05': { text: 'Template', color: 'coral', rotate: -12, pos: '-top-10 -right-6' },
 };
 
 export function Work() {
@@ -164,6 +250,22 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
   const [inView, setInView] = useState(false);
 
   const currentStamp = stamps[project.index];
+
+  const handleRequestSimilar = (projectName: string) => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        window.dispatchEvent(
+          new CustomEvent('prefill-contact', {
+            detail: {
+              message: `Hi Shreyan! I am interested in requesting a website similar to the "${projectName}". Let's discuss details.`,
+            },
+          })
+        );
+      }, 300);
+    }
+  };
 
   return (
     <motion.div
@@ -244,10 +346,12 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
               ))}
             </div>
 
-            {/* focus areas — only for featured project */}
+            {/* focus areas */}
             {project.focusAreas && (
               <div className="mt-7">
-                <div className="editorial-label mb-2.5">What I worked on</div>
+                <div className="editorial-label mb-2.5">
+                  {project.isTemplate ? 'Key Features & Systems' : 'What I worked on'}
+                </div>
                 <div className="flex flex-wrap gap-x-5 gap-y-1.5">
                   {project.focusAreas.map((f) => (
                     <span key={f} className="flex items-center gap-1.5 font-sans text-[0.82rem] text-graphite">
@@ -259,17 +363,30 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
               </div>
             )}
 
-            {/* CTA */}
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="Visit live"
-              className="group mt-7 inline-flex items-center gap-2.5 border-b border-ink pb-1 font-display text-[0.95rem] text-ink transition-all duration-300 hover:gap-4"
-            >
-              Visit Website
-              <ArrowUpRight size={18} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            {/* CTAs */}
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor={project.isTemplate ? 'View Live Demo' : 'View Project'}
+                className="group inline-flex items-center gap-2 border-b border-ink pb-1 font-display text-[0.95rem] text-ink transition-all duration-300 hover:gap-3.5"
+              >
+                {project.isTemplate ? 'View Live Demo' : 'View Project'}
+                <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+
+              {project.isTemplate && (
+                <button
+                  onClick={() => handleRequestSimilar(project.name)}
+                  data-cursor="Request this"
+                  className="group inline-flex items-center gap-2 border-b border-coral pb-1 font-display text-[0.95rem] text-coral transition-all duration-300 hover:gap-3.5 cursor-pointer bg-transparent text-left"
+                >
+                  Request Similar Website
+                  <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </button>
+              )}
+            </div>
           </Reveal>
         </div>
 
