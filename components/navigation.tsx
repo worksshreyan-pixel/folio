@@ -167,28 +167,41 @@ export function Navigation() {
       {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-paper/98 md:hidden"
-          >
-            <div className="flex h-full flex-col justify-center px-8">
-              {links.map((l, i) => (
-                <motion.button
-                  key={`${l.id}-${l.label}`}
-                  onClick={() => go(l.id)}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.06 * i + 0.1 }}
-                  className="flex items-baseline gap-4 border-b border-rule/60 py-5 text-left"
-                >
-                  <span className="editorial-num text-stone/70 text-lg">{l.n}</span>
-                  <span className="display text-5xl text-ink">{l.label}</span>
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
+          <>
+            {/* Backdrop overlay that closes the menu on click */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMenuOpen(false)}
+              className="fixed inset-0 z-30 bg-black/15 backdrop-blur-[1px] md:hidden"
+            />
+
+            {/* Premium floating mobile navigation panel */}
+            <motion.div
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed inset-x-5 top-20 z-40 overflow-hidden rounded-2xl border border-rule/35 bg-[hsl(var(--paper)/0.96)] p-6 shadow-2xl backdrop-blur-md md:hidden"
+            >
+              <div className="flex flex-col gap-1">
+                {links.map((l, i) => (
+                  <motion.button
+                    key={`${l.id}-${l.label}`}
+                    onClick={() => go(l.id)}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.05 * i + 0.05 }}
+                    className="flex items-baseline gap-4 border-b border-rule/30 py-4 text-left last:border-b-0"
+                  >
+                    <span className="editorial-num text-stone/70 text-base">{l.n}</span>
+                    <span className="display text-3xl text-ink">{l.label}</span>
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
