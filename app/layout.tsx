@@ -32,14 +32,14 @@ const hand = Caveat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://shreyan.studio'),
-  title: 'Shreyan — Designer & Developer of Premium Web Experiences',
+  metadataBase: new URL('https://shreyanbuilds.vercel.app'),
+  title: 'Shreyan Yemul — Computer Engineering Student & AI Full-Stack Developer',
   description:
-    'Shreyan designs and builds premium, detail-obsessed digital experiences for businesses. Designer, developer, and creative problem solver.',
+    'Computer Engineering Student at Walchand Institute of Technology (WIT), Solapur. Architecting and shipping production-ready web applications, complex multi-table SaaS MVPs, and modern full-stack systems.',
   openGraph: {
-    title: 'Shreyan — Designer & Developer of Premium Web Experiences',
+    title: 'Shreyan Yemul — Computer Engineering Student & AI Full-Stack Developer',
     description:
-      'Premium, handcrafted websites for businesses. Designer, developer, creative problem solver.',
+      'Computer Engineering Student at Walchand Institute of Technology (WIT), Solapur. Architecting and shipping production-ready web applications, complex multi-table SaaS MVPs, and modern full-stack systems.',
     type: 'website',
   },
   twitter: { card: 'summary_large_image' },

@@ -4,11 +4,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import emailjs from '@emailjs/browser';
 import { Reveal, SectionIndex, Stamp, Annotation, Highlight, Magnetic, CornerMarks, PencilArrow } from '@/components/paper-kit';
-import { Mail, Phone, MessageCircle, Send, Check, Loader2 } from 'lucide-react';
+import { Mail, Phone, MessageCircle, Send, Check, Loader2, Linkedin, Github } from 'lucide-react';
 
-const EMAIL = 'works.shreyan@gmail.com';
-const PHONE = '+91 9422420145';
-const WHATSAPP = '919422420145';
+const EMAIL = 'shreyanyemul.works@gmail.com';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -98,14 +96,13 @@ export function Contact() {
 
       <div className="mx-auto max-w-[1280px]">
         <Reveal>
-          <SectionIndex n="05" label="Contact" className="mb-12" />
+          <SectionIndex n="05" label="Get in Touch" className="mb-12" />
         </Reveal>
 
         <Reveal>
-          <h2 className="display max-w-5xl text-[11vw] leading-[0.86] text-ink sm:text-[8vw] lg:text-[7.5rem]">
-            Let&rsquo;s build<br />
-            something <Highlight>worth</Highlight><br />
-            <span className="text-stone italic font-light">obsessing</span> over.
+          <h2 className="display max-w-5xl text-[10vw] leading-[0.9] text-ink sm:text-[7.5vw] lg:text-[6.5rem]">
+            Let&rsquo;s <Highlight>Connect</Highlight> &<br />
+            <span className="text-stone italic font-light">Collaborate</span>.
           </h2>
         </Reveal>
 
@@ -113,27 +110,20 @@ export function Contact() {
           {/* left: contact details */}
           <div>
             <Reveal>
-              <p className="max-w-md text-pretty font-sans text-[1rem] leading-relaxed text-graphite">
-                Have a project in mind, or just want to say hello? I reply to
-                every serious inquiry within a day. Tell me what you&rsquo;re
-                building.
+              <p className="max-w-md text-pretty font-sans text-[1.02rem] leading-relaxed text-graphite">
+                Open to discussing full-stack development, early-stage product engineering, AI workflows, and software roles.
               </p>
             </Reveal>
 
             <Reveal delay={0.1} className="mt-10 space-y-5">
-              <ContactRow icon={Mail} label="Email" value={EMAIL} href={`mailto:${EMAIL}`} />
-              <ContactRow icon={Phone} label="Phone" value={PHONE} href={`tel:${PHONE.replace(/\s/g, '')}`} />
-              <ContactRow
-                icon={MessageCircle}
-                label="WhatsApp"
-                value="Chat directly"
-                href={`https://wa.me/${WHATSAPP}`}
-              />
+              <ContactRow icon={Linkedin} label="LinkedIn Profile ↗" value="Connect on LinkedIn" href="https://www.linkedin.com/in/shreyan-yemul-b802b5417/" />
+              <ContactRow icon={Github} label="GitHub Repositories ↗" value="Explore Codebases" href="https://github.com/worksshreyan-pixel" />
+              <ContactRow icon={Mail} label="Direct Email" value={EMAIL} href={`mailto:${EMAIL}`} />
             </Reveal>
 
             <Reveal delay={0.2} className="mt-12 flex items-center gap-4">
               <Stamp color="sage" rotate={-8}>
-                open for work · 2026
+                open for roles · 2026
               </Stamp>
               <Annotation className="text-[0.9rem]" rotate={3} arrow>
                 say hi
@@ -157,10 +147,10 @@ export function Contact() {
                 style={{ transform: 'rotate(-10deg)' }}
               />
               <div className="editorial-label mb-1 flex items-center justify-between">
-                <span>Project Inquiry / Form</span>
+                <span>Direct Contact / Form</span>
                 <span className="text-rule">F-01</span>
               </div>
-              <div className="editorial-num text-ink text-lg mb-7">Tell me about it.</div>
+              <div className="editorial-num text-ink text-lg mb-7">Let's start a conversation.</div>
 
               <Field label="Your name" n="01">
                 <input
@@ -192,7 +182,7 @@ export function Contact() {
                   onChange={onChange}
                   required
                   rows={4}
-                  placeholder="A premium website for my clinic, launching in Q2…"
+                  placeholder="Interested in collaborating on a product, discussing software roles, or custom MVP builds…"
                   className="editorial-input resize-none"
                 />
               </Field>
@@ -211,7 +201,7 @@ export function Contact() {
                       </motion.span>
                     ) : (
                       <motion.span key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2">
-                        Send inquiry
+                        Send Message / Inquire
                         <Send size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                       </motion.span>
                     )}

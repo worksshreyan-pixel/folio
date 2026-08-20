@@ -4,17 +4,17 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const links = [
-  { id: 'work', label: 'Work', n: '01' },
-  { id: 'about', label: 'About', n: '02' },
-  { id: 'about', label: 'Toolkit', n: '03' },
-  { id: 'process', label: 'Approach', n: '04' },
-  { id: 'contact', label: 'Contact', n: '05' },
+  { id: 'work', label: 'Work & MVPs', n: '01' },
+  { id: 'about', label: 'Background', n: '02' },
+  { id: 'about', label: 'Technical Stack', n: '03' },
+  { id: 'process', label: 'Capabilities', n: '04' },
+  { id: 'contact', label: 'Get in Touch', n: '05' },
 ];
 
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('work');
-  const [activeLabel, setActiveLabel] = useState('Work');
+  const [activeLabel, setActiveLabel] = useState('Work & MVPs');
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -38,12 +38,12 @@ export function Navigation() {
           const id = entry.target.id;
           const curLabel =
             id === 'about'
-              ? 'About'
+              ? 'Background'
               : id === 'work'
-              ? 'Work'
+              ? 'Work & MVPs'
               : id === 'process'
-              ? 'Approach'
-              : 'Contact';
+              ? 'Capabilities'
+              : 'Get in Touch';
           setActive(id);
           setActiveLabel(curLabel);
         }
@@ -106,19 +106,19 @@ export function Navigation() {
               >
                 <span
                   className={`font-mono text-[0.7rem] tracking-wide transition-colors ${
-                    active === l.id && activeLabel === l.label ? 'text-ink' : 'text-stone'
+                    active === l.id && (activeLabel === l.label || (l.id === 'about' && (activeLabel === 'Background' || activeLabel === 'Technical Stack'))) ? 'text-ink' : 'text-stone'
                   }`}
                 >
                   {l.n}
                 </span>
                 <span
                   className={`ml-1.5 link-underline font-display text-[0.9rem] ${
-                    active === l.id && activeLabel === l.label ? 'text-ink' : 'text-graphite'
+                    active === l.id && (activeLabel === l.label || (l.id === 'about' && (activeLabel === 'Background' || activeLabel === 'Technical Stack'))) ? 'text-ink' : 'text-graphite'
                   }`}
                 >
                   {l.label}
                 </span>
-                {active === l.id && activeLabel === l.label && (
+                {(active === l.id && (activeLabel === l.label || (l.id === 'about' && (activeLabel === 'Background' && l.label === 'Background') || (activeLabel === 'Technical Stack' && l.label === 'Technical Stack')))) && (
                   <motion.span
                     layoutId="nav-dot"
                     className="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-coral"
@@ -131,13 +131,15 @@ export function Navigation() {
 
           {/* CTA + mobile toggle — right column */}
           <div className="flex flex-1 items-center justify-end gap-3">
-            <button
-              onClick={() => go('contact')}
+            <a
+              href="https://www.linkedin.com/in/shreyan-yemul-b802b5417/"
+              target="_blank"
+              rel="noopener noreferrer"
               data-cursor="true"
               className="hidden rounded-full bg-[#1a1a1a] px-5 py-2 font-sans text-[0.85rem] font-medium tracking-tight text-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-black hover:shadow-md sm:block"
             >
-              Let&rsquo;s talk
-            </button>
+              View LinkedIn
+            </a>
             {/* Mobile toggle */}
             <button
               className="flex h-9 w-9 flex-col items-center justify-center gap-[5px] md:hidden"

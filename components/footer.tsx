@@ -17,7 +17,7 @@ export function Footer() {
                 Shreyan<span className="text-coral">.</span>
               </div>
               <Annotation className="mt-3 text-[0.95rem]" rotate={-2}>
-                crafted with care, pixel by pixel
+                designed with intent · built at AI speed
               </Annotation>
             </div>
 
@@ -34,9 +34,7 @@ export function Footer() {
                 </span>
               </a>
               <div className="flex flex-wrap gap-x-6 gap-y-2 lg:justify-end">
-                <a href="mailto:works.shreyan@gmail.com" className="link-underline font-sans text-[0.85rem] text-graphite">Email</a>
-                <a href="https://wa.me/919422420145" target="_blank" rel="noopener noreferrer" className="link-underline font-sans text-[0.85rem] text-graphite">WhatsApp</a>
-                <a href="tel:+919422420145" className="link-underline font-sans text-[0.85rem] text-graphite">Phone</a>
+                <a href="mailto:shreyanyemul.works@gmail.com" className="link-underline font-sans text-[0.85rem] text-graphite">Email</a>
               </div>
               <div className="editorial-label text-rule">© 2026 · All rights reserved</div>
             </div>
@@ -46,7 +44,7 @@ export function Footer() {
         {/* baseline ruler */}
         <div className="mt-12 flex items-center justify-between border-t border-rule pt-4">
           <span className="editorial-label !text-[0.5rem]">Portfolio · Vol. 01</span>
-          <span className="font-mono text-[0.5rem] text-stone">Designed & built by Shreyan</span>
+          <span className="font-mono text-[0.55rem] text-stone">Computer Engineering Student @ WIT Solapur · Built at AI Speed</span>
           <span className="editorial-label !text-[0.5rem]">India · IN</span>
         </div>
       </div>

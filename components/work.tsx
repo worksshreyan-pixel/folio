@@ -14,11 +14,8 @@ import {
 } from '@/components/paper-kit';
 import {
   BrowserMock,
-  EliteCosmoSite,
-  GaddamClinicSite,
   DealItSite,
-  DoctorTemplateSite,
-  ClinicTemplateSite,
+  DeltSite,
   AnnotationChip,
 } from '@/components/browser-mock';
 import { ArrowUpRight } from 'lucide-react';
@@ -39,6 +36,7 @@ type Project = {
   tapeColor: 'gold' | 'coral' | 'sage' | 'lavender';
   renderSite: () => JSX.Element;
   featured?: boolean;
+  statusBadge?: string;
   focusAreas?: string[];
   githubUrl?: string;
   isTemplate?: boolean;
@@ -47,174 +45,71 @@ type Project = {
 const projects: Project[] = [
   {
     index: '01',
-    name: 'Deal-it',
-    tagline: 'Personal SaaS project · featured',
-    category: 'SaaS Product Concept',
+    name: 'DELT',
+    tagline: 'SaaS for Secure Digital Delivery & Private Client Deals',
+    category: 'SaaS / Private Transactions',
     year: '2026',
     description:
-      'A premium SaaS concept focused on secure digital product delivery and private transactions.',
-    url: 'https://dealit-ashen.vercel.app/',
-    tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+      'Architected a full-scale digital deal-closing platform integrating private file delivery, OTP verification, live deal negotiation, and automated storage clean-up.',
+    url: 'https://www.delt.website',
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase (Auth, RLS, Storage)', 'Resend API', 'Vercel'],
     specs: [
-      { label: 'Industry', value: 'SaaS Marketplace' },
-      { label: 'Role', value: 'Product Designer & Developer' },
-      { label: 'Technology', value: 'Next.js & Supabase' },
-      { label: 'Status', value: 'In Development' },
+      { label: 'Industry', value: 'SaaS / Private Transactions' },
+      { label: 'Role', value: 'Full-Stack Product Architect & Builder' },
+      { label: 'Technology', value: 'Next.js, Supabase, Resend API' },
+      { label: 'Status', value: 'In Active Development' },
     ],
     notes: [
-      { text: 'escrow vault — funds held until delivery', color: 'sage', rotate: -3, pos: '-left-6 top-8' },
-      { text: 'AI-assisted workflow → faster iteration', color: 'coral', rotate: 5, pos: 'right-2 -bottom-6' },
+      { text: 'OTP & Payment Gated Delivery', color: 'sage', rotate: -3, pos: '-left-6 top-8' },
+      { text: 'Real-time Client Chat & Negotiation', color: 'coral', rotate: 5, pos: 'right-2 -bottom-6' },
+      { text: 'Multi-Table Relational Schema', color: 'gold', rotate: -1.5, pos: 'left-12 -bottom-8' },
     ],
     tapeColor: 'sage',
-    renderSite: DealItSite,
+    renderSite: DeltSite,
     featured: true,
+    statusBadge: 'In Active Development (Alpha Build)',
     focusAreas: [
-      'Product thinking',
-      'Complex workflows',
-      'Modern SaaS UI',
-      'Business-focused design',
+      'Private Deal Engine: Instant deal generation with auto-expiring links, deliverable versioning, and direct download bundles.',
+      'Security & Verification: OTP-gated file access, custom domain verification via Resend, and database-level Row Level Security (RLS).',
+      'Real-Time Negotiation: Live client ↔ creator chat with counter-proposals and price change requests.',
+      'Automated Lifecycle: Supabase storage tracking, deal credit management, and automated file expiration clean-up.',
     ],
   },
   {
     index: '02',
-    name: 'Elite Cosmo Clinic',
-    tagline: 'Professional clinic website',
-    category: 'Professional Clinic Website',
+    name: 'Deal-it V1',
+    tagline: 'Initial Proof-of-Concept for Private Digital Transactions',
+    category: 'SaaS Concept & Prototype',
     year: '2026',
     description:
-      'A premium healthcare website concept designed for a modern cosmetic clinic, focusing on trust, branding, and patient conversion.',
-    url: 'https://cosmo.examonly2025.workers.dev/',
-    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+      'The initial proof-of-concept for DELT exploring escrow workflows, creator-client delivery interfaces, and cloud storage integrations.',
+    url: 'https://dealit-ashen.vercel.app',
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase'],
     specs: [
-      { label: 'Industry', value: 'Cosmetic Clinic' },
-      { label: 'Role', value: 'Design & Development' },
-      { label: 'Technology', value: 'Next.js & React' },
-      { label: 'Status', value: 'Live' },
+      { label: 'Industry', value: 'SaaS Prototype' },
+      { label: 'Role', value: 'UI/UX & Architectural Proof-of-Concept' },
+      { label: 'Technology', value: 'Next.js & Supabase' },
+      { label: 'Status', value: 'Completed Prototype' },
     ],
     notes: [
-      { text: 'calm palette — builds trust with patients', color: 'lavender', rotate: -3, pos: 'sm:-left-6 top-10' },
-      { text: 'appointment booking front and centre', color: 'sage', rotate: 4, pos: 'right-2 -bottom-6' },
+      { text: 'escrow vault — funds held until delivery', color: 'sage', rotate: -3, pos: '-left-6 top-8' },
+      { text: 'AI-assisted workflow → rapid MVP', color: 'coral', rotate: 5, pos: 'right-2 -bottom-6' },
     ],
     tapeColor: 'lavender',
-    renderSite: EliteCosmoSite,
+    renderSite: DealItSite,
+    featured: true,
+    statusBadge: 'SaaS Concept · V1 Prototype (Completed)',
     focusAreas: [
-      'Luxury Aesthetic Design',
-      'Premium Hero Sections',
-      'Patient Conversion Layouts',
-      'Custom Appointment Booking',
-      'Interactive Treatments Grid',
-    ],
-  },
-  {
-    index: '03',
-    name: 'Dr. Gaddam Clinic',
-    tagline: 'Professional clinic website',
-    category: 'Professional Clinic Website',
-    year: '2026',
-    description:
-      'A doctor-focused healthcare website concept designed around credibility, accessibility, and patient communication.',
-    url: 'https://vibe-bolt.vercel.app/',
-    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    specs: [
-      { label: 'Industry', value: 'General Clinic' },
-      { label: 'Role', value: 'Design & Development' },
-      { label: 'Technology', value: 'Next.js & React' },
-      { label: 'Status', value: 'Live' },
-    ],
-    notes: [
-      { text: 'warm, approachable — feels human', color: 'coral', rotate: 3, pos: '-left-4 top-16' },
-      { text: 'booking + video visit options', color: 'gold', rotate: -4, pos: 'right-0 -bottom-4' },
-    ],
-    tapeColor: 'coral',
-    renderSite: GaddamClinicSite,
-    focusAreas: [
-      'Approachable Doctor Identity',
-      'Credibility & Patient Reviews',
-      'Direct Booking Integration',
-      'Interactive Vitals Monitor',
-      'Service-focused Architecture',
-    ],
-  },
-  {
-    index: '04',
-    name: 'Doctor Template',
-    tagline: 'Reusable Website System',
-    category: 'Reusable Website System',
-    year: '2026',
-    description:
-      'A reusable doctor website template designed to help healthcare professionals establish a premium online presence quickly.',
-    url: 'https://clinic-gilt-ten.vercel.app/',
-    isTemplate: true,
-    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    specs: [
-      { label: 'Suitable For', value: 'Individual Doctors & Consultants' },
-      { label: 'Customization', value: 'Config Driven' },
-      { label: 'Architecture', value: 'Reusable System' },
-      { label: 'Speed', value: '1-Day Setup' },
-    ],
-    notes: [
-      { text: '1-day setup — config-driven', color: 'sage', rotate: 4, pos: '-left-6 top-8' },
-      { text: 'direct WhatsApp leads', color: 'gold', rotate: -3, pos: 'right-2 -bottom-6' },
-    ],
-    tapeColor: 'sage',
-    renderSite: DoctorTemplateSite,
-    focusAreas: [
-      'Premium Hero Section',
-      'Doctor Profile Sections',
-      'Appointment Form',
-      'WhatsApp Integration',
-      'Responsive Design',
-      'SEO Ready',
-      'Config Driven',
-      'Easy Customization',
-      'Reusable Components',
-      'Smooth Animations',
-    ],
-  },
-  {
-    index: '05',
-    name: 'Clinic Template',
-    tagline: 'Reusable Website System',
-    category: 'Reusable Website System',
-    year: '2026',
-    description:
-      'A reusable healthcare website system built for clinics and medical businesses with scalable components and customization support.',
-    url: 'https://dr-cyan-seven.vercel.app/',
-    isTemplate: true,
-    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    specs: [
-      { label: 'Suitable For', value: 'General & Multispeciality Clinics' },
-      { label: 'Customization', value: 'Config Driven Architecture' },
-      { label: 'Performance', value: 'Optimized Score 100' },
-      { label: 'Speed', value: 'Fast Delivery' },
-    ],
-    notes: [
-      { text: 'conversion optimized layout', color: 'lavender', rotate: -4, pos: '-left-4 top-16' },
-      { text: 'fully reusable components', color: 'sage', rotate: 3, pos: 'right-0 -bottom-4' },
-    ],
-    tapeColor: 'coral',
-    renderSite: ClinicTemplateSite,
-    focusAreas: [
-      'Conversion Focused Layout',
-      'Appointment System',
-      'WhatsApp Integration',
-      'Responsive Design',
-      'SEO Ready',
-      'Config Driven Architecture',
-      'Easy Client Customization',
-      'Reusable Components',
-      'Premium UI',
-      'Optimized Performance',
+      'Core Deal Flow: Validated initial creator-to-client private link sharing model.',
+      'Escrow Concept UI: Prototyped funds-held state and deliverable milestones.',
+      'Foundation for DELT: Provided the architectural validation leading to the commercial DELT platform.',
     ],
   },
 ];
 
 const stamps: Record<string, { text: string; color: 'sage' | 'coral' | 'gold'; rotate: number; pos: string }> = {
-  '01': { text: 'v2.0', color: 'sage', rotate: -8, pos: '-top-10 -right-6' },
-  '02': { text: 'Approved', color: 'coral', rotate: 12, pos: '-bottom-10 right-10' },
-  '03': { text: 'Launch', color: 'gold', rotate: -15, pos: '-top-8 -left-6' },
-  '04': { text: 'System', color: 'sage', rotate: 10, pos: '-bottom-10 right-6' },
-  '05': { text: 'Template', color: 'coral', rotate: -12, pos: '-top-10 -right-6' },
+  '01': { text: 'Active', color: 'sage', rotate: -8, pos: '-top-10 -right-6' },
+  '02': { text: 'Prototype', color: 'coral', rotate: 12, pos: '-bottom-10 right-10' },
 };
 
 export function Work() {
@@ -285,14 +180,26 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
         </span>
       </div>
 
-      {/* featured badge */}
-      {project.featured && (
+      {/* status / featured badge */}
+      {project.statusBadge ? (
+        <Reveal className="absolute -top-10 left-0 z-20">
+          <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-50/50 px-3 py-1 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-amber-700">
+            {project.index === '01' && (
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+            )}
+            {project.statusBadge}
+          </span>
+        </Reveal>
+      ) : project.featured ? (
         <Reveal className="absolute -top-10 left-0 z-20">
           <span className="inline-flex items-center gap-2 rounded-full border border-coral/50 bg-paper px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-coral">
             <span className="h-1.5 w-1.5 rounded-full bg-coral" /> Featured Project
           </span>
         </Reveal>
-      )}
+      ) : null}
 
       <div
         className={`relative z-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16 ${flip ? 'lg:[direction:rtl]' : ''

@@ -376,123 +376,6 @@ export function DealItSite() {
   );
 }
 
-export function GaddamClinicSite() {
-  return (
-    <AutoScroll distance="72%" duration={30}>
-      <div className="bg-[#FAFBFD] text-[#0F2537] font-sans pb-8 min-h-[900px] relative text-left">
-        {/* Grid pattern */}
-        <div className="absolute inset-0 blueprint-lines opacity-[0.06] pointer-events-none" />
-
-        {/* Navbar */}
-        <div className="bg-[#FAFBFD]/95 border-b border-slate-200/60 px-4 py-2.5 flex items-center justify-between sticky top-0 z-30 select-none">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[0.55rem]">🩺</span>
-            <span className="font-bold text-[0.45rem] tracking-tight text-slate-800 uppercase">Dr. Gaddam Clinic</span>
-          </div>
-          <div className="flex gap-2.5 text-[0.32rem] font-semibold text-slate-500 uppercase">
-            <span>Home</span>
-            <span>Treatments</span>
-            <span>Doctors</span>
-            <span>Contact</span>
-          </div>
-          <button className="bg-[#2563EB] text-white px-3 py-1 rounded text-[0.32rem] font-bold shadow-sm">
-            Book Appointment
-          </button>
-        </div>
-
-        {/* Hero Section Grid */}
-        <div className="grid grid-cols-12 gap-3 px-5 pt-8 items-start">
-          
-          {/* Left Text */}
-          <div className="col-span-7 flex flex-col gap-2">
-            <span className="inline-block bg-[#2563EB]/10 text-[#2563EB] px-2 py-0.5 rounded-full text-[0.25rem] font-bold w-fit">
-              ✦ Trusted dermatology care in Solapur
-            </span>
-            <h1 className="text-[1.05rem] font-extrabold leading-tight mt-1 text-[#0F2537]">
-              Confident Skin. Healthy Hair.<br />
-              <span className="text-[#2563EB]">Advanced Laser Care.</span>
-            </h1>
-            <p className="text-[0.35rem] leading-relaxed text-slate-500 mt-1">
-              Expert dermatology, hair restoration and laser treatments delivered with modern technology and compassionate care.
-            </p>
-            <div className="flex gap-2 mt-2">
-              <button className="bg-[#2563EB] text-white px-3 py-1 rounded text-[0.32rem] font-bold shadow-sm">
-                Book Appointment
-              </button>
-              <button className="border border-slate-200 bg-white text-slate-700 px-3 py-1 rounded text-[0.32rem] font-bold flex items-center gap-1">
-                View Treatments →
-              </button>
-            </div>
-            <div className="flex items-center gap-1 mt-2 text-[0.28rem] text-slate-400">
-              <span className="text-[#2563EB]">🔵🔵🔵🔵</span>
-              <span className="text-amber-500">★★★★★</span>
-              <span>Rated 4.9/5 by 500+ happy patients</span>
-            </div>
-          </div>
-
-          {/* Right Profile Mockup */}
-          <div className="col-span-5 relative">
-            <div className="aspect-[4/5] w-full rounded-2xl bg-white border border-slate-100 shadow-sm relative overflow-hidden flex flex-col justify-end p-3">
-              {/* Doctor Consulting patient gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-slate-100/10 to-transparent" />
-              
-              {/* Floating badges */}
-              <div className="absolute top-3 right-3 bg-emerald-500 text-white px-1.5 py-0.5 rounded text-[0.25rem] font-bold flex items-center gap-1">
-                <span>❤️</span> 10,000+ treated
-              </div>
-              <div className="absolute bottom-3 left-3 bg-[#2563EB] text-white px-1.5 py-0.5 rounded text-[0.25rem] font-bold flex items-center gap-1">
-                <span>🩺</span> 16+ Years
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom features bar */}
-        <div className="mt-8 mx-5 bg-white border border-slate-100 rounded-xl p-3 shadow-sm grid grid-cols-4 gap-2 text-[0.25rem] font-bold text-slate-500 text-center select-none">
-          <div className="border-r border-slate-100 last:border-0 pr-1.5 font-bold">✓ USFDA-Approved</div>
-          <div className="border-r border-slate-100 last:border-0 px-1.5">✓ MD Specialist</div>
-          <div className="border-r border-slate-100 last:border-0 px-1.5">✓ Personalised Care</div>
-          <div className="last:border-0 pl-1.5">✓ 16+ Yrs Exp</div>
-        </div>
-
-        {/* 2. Specialties Grid */}
-        <div className="mt-8 px-5">
-          <span className="text-[0.25rem] text-[#2563EB] font-bold uppercase tracking-wider block mb-1">✦ Services</span>
-          <h3 className="text-xs font-black text-slate-800 mb-4">Medical & Laser Solutions</h3>
-          <div className="grid grid-cols-2 gap-3.5">
-            <div className="bg-white border border-slate-100 rounded-lg p-2.5 shadow-sm">
-              <span className="text-[0.5rem]">🧬</span>
-              <h5 className="text-[0.32rem] font-bold mt-1 text-[#0F2537]">Laser Scar Correction</h5>
-              <p className="text-[0.25rem] text-slate-400 leading-tight mt-0.5">Advanced treatments for scarring.</p>
-            </div>
-            <div className="bg-white border border-slate-100 rounded-lg p-2.5 shadow-sm">
-              <span className="text-[0.5rem]">🧴</span>
-              <h5 className="text-[0.32rem] font-bold mt-1 text-[#0F2537]">Dermatology Care</h5>
-              <p className="text-[0.25rem] text-slate-400 leading-tight mt-0.5">Comprehensive skin solutions.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* 3. Review quote block */}
-        <div className="mt-8 mx-5 p-3 bg-blue-50/50 rounded-xl border border-blue-100/50 flex flex-col gap-1 select-none text-[0.28rem]">
-          <div className="flex justify-between items-center">
-            <span className="font-bold text-slate-800">Solapur Review</span>
-            <span className="text-[#2563EB]">★★★★★</span>
-          </div>
-          <p className="italic text-slate-500 leading-normal">
-            "Outstanding laser treatment results in Solapur. Recommended Dr. Gaddam to all my friends."
-          </p>
-          <span className="text-[0.22rem] font-bold text-slate-400">— Saurabh K.</span>
-        </div>
-
-        {/* 4. Footer */}
-        <div className="mt-10 border-t border-slate-100 pt-4 text-center select-none">
-          <span className="text-[0.25rem] text-slate-400 font-medium">Dr. Gaddam Clinic Solapur · Skin & Hair</span>
-        </div>
-      </div>
-    </AutoScroll>
-  );
-}
 
 export function AnnotationChip({
   children,
@@ -764,5 +647,193 @@ features:
         </div>
       </AutoScroll>
     </TemplateSystemPreview>
+  );
+}
+
+export function DeltSite() {
+  return (
+    <AutoScroll distance="30%" duration={12}>
+      <div className="w-full bg-white text-slate-900 font-sans p-6 md:p-8 flex flex-col items-center select-none border-b border-slate-100">
+        {/* Mini Nav */}
+        <div className="w-full flex items-center justify-between pb-6 border-b border-slate-100/80">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded bg-slate-950 flex items-center justify-center text-white text-xs font-bold font-mono">P</div>
+            <span className="font-bold text-sm tracking-tight text-slate-950">DELT</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-4 text-xs font-medium text-slate-500">
+            <span>How it works</span>
+            <span>Pricing</span>
+            <span>Security</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium text-slate-600 px-2 py-1">Log in</span>
+            <span className="text-xs font-semibold bg-slate-950 text-white px-3 py-1.5 rounded-lg shadow-sm">Get started</span>
+          </div>
+        </div>
+
+        {/* Hero Text */}
+        <div className="w-full max-w-lg text-center pt-8 pb-6 flex flex-col items-center">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 text-[11px] font-medium text-emerald-700 mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            Private client transactions, all in one place
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight leading-tight">
+            The workspace where digital work gets done.
+          </h2>
+          <p className="text-xs text-slate-500 mt-2 max-w-sm">
+            DELT brings client communication, negotiation, delivery and payment into one secure workspace.
+          </p>
+          <div className="flex items-center gap-2.5 mt-4">
+            <button className="text-xs font-medium bg-slate-950 text-white px-4 py-2 rounded-lg flex items-center gap-1.5 shadow-sm">
+              Create your first Deal <span>→</span>
+            </button>
+            <button className="text-xs font-medium bg-white text-slate-700 border border-slate-200 px-3.5 py-2 rounded-lg shadow-2xs">
+              See how it works
+            </button>
+          </div>
+        </div>
+
+        {/* Inner Floating Deal Card Mockup */}
+        <div className="w-full max-w-md bg-white rounded-xl border border-slate-200/80 shadow-md p-4 text-left mt-2">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+              <h4 className="text-xs font-bold text-slate-900">Clinic Website Redesign</h4>
+              <p className="text-[10px] text-slate-400">Sarah Mitchell · BrightSmile Dental</p>
+            </div>
+            <span className="text-[10px] font-medium text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
+              ● In Progress
+            </span>
+          </div>
+          
+          <div className="grid grid-cols-3 gap-2 my-3 text-center">
+            <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
+              <span className="text-[9px] text-slate-400 uppercase tracking-wider block">Price</span>
+              <span className="text-xs font-bold text-slate-900">₹62,000</span>
+            </div>
+            <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
+              <span className="text-[9px] text-slate-400 uppercase tracking-wider block">Progress</span>
+              <span className="text-xs font-bold text-slate-900">65%</span>
+            </div>
+            <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
+              <span className="text-[9px] text-slate-400 uppercase tracking-wider block">Payment</span>
+              <span className="text-xs font-bold text-amber-600">Pending</span>
+            </div>
+          </div>
+
+          <div className="space-y-1.5 text-[11px] pt-1">
+            <div className="bg-slate-50 p-2 rounded-lg text-slate-600 border border-slate-100">
+              <span className="font-semibold text-slate-800">Sarah:</span> Can we also add dark mode to the booking section?
+            </div>
+            <div className="bg-slate-950 text-white p-2 rounded-lg ml-auto max-w-[85%] text-right font-medium">
+              Yes, I&apos;ll include it in the next version.
+            </div>
+          </div>
+        </div>
+      </div>
+    </AutoScroll>
+  );
+}
+
+export function GaddamClinicSite() {
+  return (
+    <AutoScroll distance="72%" duration={30}>
+      <div className="bg-[#FAF9F5] text-[#2C3E50] font-sans pb-8 min-h-[900px] relative text-left">
+        {/* Grid lines */}
+        <div className="absolute inset-0 blueprint-lines opacity-[0.04] pointer-events-none" />
+
+        {/* Navbar */}
+        <div className="bg-[#FAF9F5]/98 border-b border-stone-200/50 px-3 py-2.5 flex items-center justify-between sticky top-0 z-30 select-none">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[0.55rem]">🩺</span>
+            <span className="font-extrabold text-[0.45rem] tracking-tight uppercase text-stone-800">Dr. Gaddam Clinic</span>
+          </div>
+          <button className="bg-emerald-600 text-white px-2.5 py-0.5 rounded text-[0.28rem] font-bold shadow-sm">
+            Book Appointment
+          </button>
+        </div>
+
+        {/* Hero Content */}
+        <div className="px-4 pt-6 flex flex-col gap-2 text-left">
+          <span className="inline-block bg-emerald-50 border border-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-[0.25rem] font-bold w-fit">
+            ✦ Experienced Clinical Care & Consultation
+          </span>
+          <h1 className="text-sm font-black tracking-tight text-stone-900 leading-tight">
+            Your Health. Our Mission.<br />
+            <span className="text-emerald-600 font-extrabold">Professional Patient Care.</span>
+          </h1>
+          <p className="text-[0.35rem] leading-relaxed text-stone-500">
+            Providing accessible, high-quality general healthcare services, direct scheduling, and video consultations.
+          </p>
+          <div className="flex gap-2 mt-1">
+            <button className="bg-emerald-600 text-white px-3 py-1 rounded text-[0.28rem] font-bold shadow-sm">
+              Schedule Visit
+            </button>
+            <button className="border border-stone-300 bg-white text-stone-600 px-3 py-1 rounded text-[0.28rem] font-bold">
+              Video Consult →
+            </button>
+          </div>
+          <div className="flex items-center gap-1 text-[0.26rem] text-stone-400 mt-1 select-none">
+            <span className="text-amber-500">★★★★★</span>
+            <span>4.9/5 patient rating (1200+ reviews)</span>
+          </div>
+        </div>
+
+        {/* Vitals Monitor Display Card */}
+        <div className="mt-5 mx-3">
+          <div className="aspect-[1.5/1] w-full rounded-xl border border-stone-200/60 bg-white p-4 flex flex-col justify-between shadow-sm relative overflow-hidden">
+            <div className="flex justify-between items-center border-b border-stone-100 pb-2">
+              <span className="text-[0.28rem] font-bold text-stone-800">Health Vitals Monitor</span>
+              <span className="text-[0.22rem] text-emerald-600 font-mono flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-3 py-2">
+              <div className="bg-stone-50 p-2 rounded border border-stone-100 flex flex-col">
+                <span className="text-[0.22rem] text-stone-400 uppercase font-mono">Heart Rate</span>
+                <span className="text-[0.45rem] font-bold text-stone-800 mt-0.5">72 bpm</span>
+              </div>
+              <div className="bg-stone-50 p-2 rounded border border-stone-100 flex flex-col">
+                <span className="text-[0.22rem] text-stone-400 uppercase font-mono">SpO2</span>
+                <span className="text-[0.45rem] font-bold text-emerald-600 mt-0.5">99%</span>
+              </div>
+            </div>
+            <div className="text-[0.22rem] text-stone-400 text-center select-none pt-1">
+              Synchronized via Patient Health Portal
+            </div>
+          </div>
+        </div>
+
+        {/* Services Grid */}
+        <div className="mt-6 px-3">
+          <span className="text-[0.22rem] text-emerald-600 font-bold uppercase tracking-wider block mb-0.5">✦ Specialities</span>
+          <h5 className="text-[0.32rem] font-black text-stone-800 mb-2.5">Clinical Services</h5>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="bg-white border border-stone-200/50 p-2 rounded-lg text-[0.28rem]">
+              <span className="font-bold text-stone-700 block leading-tight">General Checkup</span>
+              <span className="text-[0.24rem] text-stone-400 block mt-0.5">Comprehensive consults</span>
+            </div>
+            <div className="bg-white border border-stone-200/50 p-2 rounded-lg text-[0.28rem]">
+              <span className="font-bold text-stone-700 block leading-tight">Video Consultation</span>
+              <span className="text-[0.24rem] text-stone-400 block mt-0.5">Remote diagnoses</span>
+            </div>
+          </div>
+        </div>
+
+        {/* WhatsApp Integration */}
+        <div className="mt-6 mx-3 p-3 bg-emerald-50/50 rounded-xl border border-emerald-100 flex flex-col gap-1 items-center select-none text-[0.28rem] text-center">
+          <span className="text-[0.55rem]">💬</span>
+          <span className="font-black text-stone-800 leading-tight">Quick WhatsApp Support</span>
+          <p className="text-[0.24rem] text-stone-400">Direct booking and medical inquiries.</p>
+          <button className="mt-1.5 bg-emerald-500 text-white px-3 py-1 rounded text-[0.26rem] font-bold shadow-sm">
+            Chat Now
+          </button>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-10 border-t border-stone-200/50 pt-4 text-center select-none">
+          <span className="text-[0.25rem] text-stone-400 font-medium">Dr. Gaddam Clinic · Health Services</span>
+        </div>
+      </div>
+    </AutoScroll>
   );
 }
