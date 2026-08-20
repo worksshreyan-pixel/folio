@@ -108,7 +108,7 @@ export const CustomCursor = memo(function CustomCursor() {
   return (
     <div className="pointer-events-none fixed inset-0 z-[100] hidden md:block">
       <motion.div
-        style={{ x: ringSX, y: ringSY }}
+        style={{ x: ringSX, y: ringSY, willChange: 'transform', transform: 'translateZ(0)' }}
         className="absolute left-0 top-0"
       >
         <motion.div
@@ -129,7 +129,7 @@ export const CustomCursor = memo(function CustomCursor() {
           ) : null}
         </motion.div>
       </motion.div>
-      <motion.div style={{ x: dotX, y: dotY }} className="absolute left-0 top-0">
+      <motion.div style={{ x: dotX, y: dotY, willChange: 'transform', transform: 'translateZ(0)' }} className="absolute left-0 top-0">
         <div className="h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink/70" />
       </motion.div>
     </div>

@@ -185,8 +185,8 @@ function ProjectSpread({ project, flip }: { project: Project; flip: boolean }) {
         <Reveal className="absolute -top-10 left-0 z-20">
           <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-50/50 px-3 py-1 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-amber-700">
             {project.index === '01' && (
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative flex h-2 w-2" style={{ transform: 'translateZ(0)' }}>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 will-change-[transform,opacity]"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
             )}

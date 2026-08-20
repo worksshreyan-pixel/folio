@@ -420,6 +420,7 @@ export function Hero() {
             animate={{ y: [0, 16, 0], opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             className="h-1.5 w-1.5 rounded-full bg-ink/60"
+            style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
           />
         </div>
       </div>
